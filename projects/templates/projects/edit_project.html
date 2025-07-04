@@ -1,0 +1,431 @@
+<!-- @format -->
+
+{% extends 'base.html' %} {% load static %} {% block content %}
+<div class="container py-4">
+  <div class="row justify-content-center">
+    <div class="col-md-10">
+      <div class="card shadow-sm">
+        <div class="card-header bg-transparent">
+          <h3 class="card-title mb-0">Edit Project</h3>
+        </div>
+        <div class="card-body">
+          <form method="POST" enctype="multipart/form-data">
+            {% csrf_token %} {% if messages %}
+            <div class="messages mb-3">
+              {% for message in messages %}
+              <div class="alert alert-{{ message.tags }}">{{ message }}</div>
+              {% endfor %}
+            </div>
+            {% endif %}
+
+            <!-- Project Fields -->
+            {% for field in project_form %}
+            <div class="mb-3">
+              <label class="form-label">{{ field.label }}</label>
+
+              {% if field.name == 'tags_input' %} {{ field }}
+              <div id="tag-badges" class="d-flex flex-wrap gap-2 mb-2">
+                {% for tag in project.tags.all %}
+                <span
+                  class="badge rounded-pill px-3 py-2 bg-primary text-white tag-badge active"
+                  data-tag="{{ tag.name }}">
+                  {{ tag.name }}
+                  <i class="fas fa-times ms-2 remove-tag"></i>
+                </span>
+                {% endfor %}
+              </div>
+              <input
+                type="text"
+                id="new-tag-input"
+                class="form-control"
+                placeholder="Type tag and press Enter (spaces allowed)" />
+              {% else %} {{ field }} {% endif %} {% if field.help_text %}
+              <small class="form-text text-muted">{{ field.help_text }}</small>
+              {% endif %} {% if field.errors %}
+              <div class="invalid-feedback d-block">{{ field.errors }}</div>
+              {% endif %}
+            </div>
+            {% endfor %}
+
+            <!-- Replace the existing Images Section with this -->
+            <div class="mb-4">
+              <h5 class="border-bottom pb-2 mb-3">
+                Project Images
+                <span class="text-muted">(Maximum 5 images)</span>
+              </h5>
+              {{ image_formset.management_form }}
+
+              <div id="imageUploadsContainer">
+                <div class="image-gallery">
+                  <!-- Existing Images -->
+                  {% for form in image_formset %} {% if form.instance.image %}
+                  <div class="image-preview-card existing-image">
+                    <img
+                      src="{{ form.instance.image.url }}"
+                      alt="Project image"
+                      class="img-fluid" />
+                    {{ form.id }}
+                    <div style="display: none">{{ form.DELETE }}</div>
+                    <button type="button" class="remove-image-btn">
+                      <i class="fas fa-times"></i>
+                    </button>
+                  </div>
+                  {% endif %} {% endfor %}
+
+                  <!-- New Images Container -->
+                  <div id="imagePreviewsGrid"></div>
+
+                  <!-- Add Image Button -->
+                  <div class="image-preview-card">
+                    <button
+                      type="button"
+                      id="addImageBtn"
+                      class="add-image-btn">
+                      <i class="fas fa-plus fa-lg mb-2"></i>
+                      <br />
+                      Add Images
+                      <span class="image-count">
+                        <span id="imageCount">0</span>/5
+                      </span>
+                    </button>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="mt-4">
+              <button type="submit" class="btn btn-primary">
+                Update Project
+              </button>
+              <a
+                href="{% url 'projects:project_detail' pk=project.pk %}"
+                class="btn btn-outline-secondary"
+                >Cancel</a
+              >
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %} {% block extra_css %}
+<style>
+  .tag-badge {
+    cursor: pointer;
+    transition: 0.2s;
+  }
+  .tag-badge.active {
+    background-color: #0d6efd !important;
+    color: white !important;
+  }
+  .image-form {
+    background-color: #f8f9fa;
+  }
+  .remove-image-btn {
+    border: none;
+    background: none;
+    font-size: 1.2rem;
+    color: #dc3545;
+  }
+  .image-preview-card {
+    position: relative;
+    height: 150px;
+    width: 150px;
+    margin: auto;
+    overflow: hidden;
+    border-radius: 8px;
+    border: 2px solid #dee2e6;
+  }
+  .image-preview-card img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+  .remove-image-btn {
+    position: absolute;
+    top: 5px;
+    right: 5px;
+    padding: 0.25rem 0.5rem;
+    font-size: 0.875rem;
+    border-radius: 0.2rem;
+    opacity: 0.9;
+  }
+  .image-preview-card:hover .remove-image-btn {
+    opacity: 1;
+  }
+  .image-gallery {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+    gap: 1rem;
+    margin-bottom: 1.5rem;
+  }
+
+  .image-preview-card {
+    position: relative;
+    aspect-ratio: 1;
+    border-radius: 8px;
+    overflow: hidden;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    transition: transform 0.2s ease;
+  }
+
+  .image-preview-card:hover {
+    transform: translateY(-2px);
+  }
+
+  .image-preview-card img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: filter 0.2s ease;
+  }
+
+  .image-preview-card:hover img {
+    filter: brightness(0.9);
+  }
+
+  .remove-image-btn {
+    position: absolute;
+    top: 8px;
+    right: 8px;
+    padding: 6px 10px;
+    background: rgba(220, 53, 69, 0.9);
+    border: none;
+    border-radius: 6px;
+    color: white;
+    opacity: 0;
+    transition: opacity 0.2s ease;
+  }
+
+  .image-preview-card:hover .remove-image-btn {
+    opacity: 1;
+  }
+
+  .add-image-btn {
+    width: 100%;
+    height: 100%;
+    border: 2px dashed #dee2e6;
+    border-radius: 8px;
+    background: none;
+    transition: all 0.2s ease;
+  }
+
+  .add-image-btn:hover:not(:disabled) {
+    border-color: #0d6efd;
+    background-color: rgba(13, 110, 253, 0.04);
+  }
+
+  .image-count {
+    position: absolute;
+    top: -10px;
+    right: -10px;
+    background: #198754;
+    color: white;
+    padding: 2px 8px;
+    border-radius: 12px;
+    font-size: 0.875rem;
+  }
+</style>
+{% endblock %} {% block extra_js %}
+<script>
+  document.addEventListener("DOMContentLoaded", function () {
+    const fileInputs = document.querySelectorAll('input[type="file"]');
+    fileInputs.forEach((input) => input.classList.add("form-control"));
+
+    const formInputs = document.querySelectorAll(
+      'input:not([type="file"]):not([type="hidden"]), textarea, select'
+    );
+    formInputs.forEach((input) => input.classList.add("form-control"));
+
+    // Tags handling
+    const tagBadges = document.getElementById("tag-badges");
+    const tagsInput = document.getElementById("id_tags_input");
+    const newTagInput = document.getElementById("new-tag-input");
+
+    function updateTagsInput() {
+      const tags = [...tagBadges.querySelectorAll(".tag-badge.active")].map(
+        (badge) => badge.dataset.tag
+      );
+      tagsInput.value = tags.join(",");
+    }
+
+    // Handle removing tags
+    tagBadges.addEventListener("click", (e) => {
+      if (e.target.classList.contains("remove-tag")) {
+        e.target.closest(".tag-badge").remove();
+        updateTagsInput();
+      }
+    });
+
+    // Handle adding new tags
+    newTagInput.addEventListener("keypress", function (e) {
+      if (e.key === "Enter") {
+        e.preventDefault();
+        const tagName = this.value.trim();
+
+        if (tagName) {
+          const existingTags = [
+            ...tagBadges.querySelectorAll(".tag-badge"),
+          ].map((badge) => badge.dataset.tag.toLowerCase());
+
+          if (!existingTags.includes(tagName.toLowerCase())) {
+            const span = document.createElement("span");
+            span.className =
+              "badge rounded-pill px-3 py-2 bg-primary text-white tag-badge active";
+            span.dataset.tag = tagName;
+            span.innerHTML = `
+                        ${tagName}
+                        <i class="fas fa-times ms-2 remove-tag"></i>
+                    `;
+            tagBadges.appendChild(span);
+            updateTagsInput();
+          }
+          this.value = "";
+        }
+      }
+    });
+
+    // Initial tags setup
+    updateTagsInput();
+
+    // Image handling
+    function initializeImageHandling() {
+      const maxImages = 5;
+      const imageContainer = document.getElementById("imagePreviewsGrid");
+      const addImageBtn = document.getElementById("addImageBtn");
+      const totalFormsInput = document.querySelector(
+        '[name="form-TOTAL_FORMS"]'
+      );
+      const imageCountSpan = document.getElementById("imageCount");
+
+      function createImagePreview(file, index) {
+        const div = document.createElement("div");
+        div.className = "image-preview-card";
+        div.innerHTML = `
+            <img src="${URL.createObjectURL(file)}" alt="Preview">
+            <input type="file" name="form-${index}-image" style="display: none">
+            <input type="hidden" name="form-${index}-id" value="">
+            <button type="button" class="remove-image-btn">
+                <i class="fas fa-times"></i>
+            </button>
+        `;
+
+        // Setup file input
+        const hiddenInput = div.querySelector('input[type="file"]');
+        const dataTransfer = new DataTransfer();
+        dataTransfer.items.add(file);
+        hiddenInput.files = dataTransfer.files;
+
+        return div;
+      }
+
+      function getCurrentImageCount() {
+        const existingImages = document.querySelectorAll('.existing-image:not([style*="display: none"])').length;
+        const newImages = imageContainer.querySelectorAll('.image-preview-card').length;
+        return existingImages + newImages;
+      }
+
+      function updateImageCount() {
+        const currentCount = getCurrentImageCount();
+        imageCountSpan.textContent = currentCount;
+        addImageBtn.disabled = currentCount >= maxImages;
+        addImageBtn.parentElement.style.display = currentCount >= maxImages ? 'none' : '';
+      }
+
+      function updateFormIndexes() {
+        const allImages = imageContainer.querySelectorAll('.image-preview-card');
+        const startIndex = document.querySelectorAll('.existing-image').length;
+        
+        allImages.forEach((image, idx) => {
+            const fileInput = image.querySelector('input[type="file"]');
+            const idInput = image.querySelector('input[type="hidden"]');
+            if (fileInput) {
+                fileInput.name = `form-${startIndex + idx}-image`;
+            }
+            if (idInput) {
+                idInput.name = `form-${startIndex + idx}-id`;
+            }
+        });
+    }
+
+    // Improved remove handler
+    document.addEventListener("click", function(e) {
+        const removeBtn = e.target.closest(".remove-image-btn");
+        if (!removeBtn) return;
+
+        const card = removeBtn.closest(".image-preview-card");
+        if (!card) return;
+
+        try {
+            if (card.classList.contains("existing-image")) {
+                const deleteCheckbox = card.querySelector('input[name$="-DELETE"]');
+                if (deleteCheckbox) {
+                    deleteCheckbox.checked = true;
+                    card.style.display = "none";
+                }
+            } else {
+                card.remove();
+                updateFormIndexes();
+            }
+            updateImageCount();
+        } catch (error) {
+            console.error('Error removing image:', error);
+        }
+    });
+
+    // Improved add image handler
+    addImageBtn.addEventListener("click", function() {
+        const input = document.createElement("input");
+        input.type = "file";
+        input.accept = "image/*";
+        input.multiple = true;
+        input.click();
+
+        input.addEventListener("change", function() {
+            if (!this.files?.length) return;
+
+            const currentCount = getCurrentImageCount();
+            const remainingSlots = maxImages - currentCount;
+            const filesToProcess = Math.min(this.files.length, remainingSlots);
+
+            if (currentCount >= maxImages) {
+                alert(`Maximum ${maxImages} images allowed`);
+                return;
+            }
+
+            try {
+                Array.from(this.files)
+                    .slice(0, filesToProcess)
+                    .forEach((file, i) => {
+                        const newIndex = parseInt(totalFormsInput.value) + i;
+                        const preview = createImagePreview(file, newIndex);
+                        imageContainer.appendChild(preview);
+                    });
+
+                totalFormsInput.value = parseInt(totalFormsInput.value) + filesToProcess;
+                updateFormIndexes();
+                updateImageCount();
+
+                if (this.files.length > remainingSlots) {
+                    alert(`Only ${remainingSlots} image(s) added. Maximum limit reached.`);
+                }
+            } catch (error) {
+                console.error('Error adding images:', error);
+            }
+        });
+    });
+
+    // Initialize
+    try {
+        updateImageCount();
+    } catch (error) {
+        console.error('Error initializing image handling:', error);
+    }
+}
+
+    // Call within DOMContentLoaded
+    initializeImageHandling();
+  });
+</script>
+
+{% endblock %}
