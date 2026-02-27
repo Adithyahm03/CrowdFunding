@@ -1,0 +1,411 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block content %}
+<!-- Top Rated Projects Slider -->
+<section class="featured-slider mb-5">
+  <div class="container">
+    <div
+      id="topProjectsCarousel"
+      class="carousel slide"
+      data-bs-ride="carousel">
+      <div class="carousel-indicators">
+        {% for project in top_rated_projects %}
+        <button
+          type="button"
+          data-bs-target="#topProjectsCarousel"
+          data-bs-slide-to="{{ forloop.counter0 }}"
+          {% if forloop.first %}class="active"
+          {% endif %}></button>
+        {% endfor %}
+      </div>
+      <div class="carousel-inner rounded-4 shadow">
+        {% for project in top_rated_projects %}
+        <div class="carousel-item {% if forloop.first %}active{% endif %}">
+          <div
+            class="slide-overlay"
+            style="background-image: url('{{ project.get_first_image }}');">
+            <div class="container">
+              <div class="slide-content p-5 text-white "> 
+                <span class="badge bg-primary mb-2">Top Rated</span>
+                <h2>{{ project.title }}</h2>
+                <p>{{ project.details|truncatewords:20 }}</p>
+                <div class="progress mb-3">
+                  <div
+                    class="progress-bar bg-success"
+                    style="width: {{ project.progress }}%"></div>
+                </div>
+                <div class="rating mb-2">
+                  {% for i in "12345"|make_list %}
+                  <i
+                    class="fas fa-star {% if i <= project.average_rating|floatformat:0 %}text-warning{% else %}text-muted{% endif %}"></i>
+                  {% endfor %}
+                  <small class="text-light"
+                    >({{ project.average_rating|floatformat:1 }})</small
+                  >
+                </div>
+                <div class="funding-info">
+                  <span
+                    ><i class="fas fa-chart-line me-2"></i>{{ project.progress }}% funded</span
+                  >
+                  <span
+                    ><i class="fas fa-clock me-2"></i>{{ project.time_remaining }} </span
+                  >
+                </div>
+                <a
+                  href="{% url 'projects:project_detail' pk=project.pk %}"
+                  class="btn btn-primary mt-3">
+                  Support This Project <i class="fas fa-arrow-right ms-2"></i>
+                </a>
+              </div>
+            </div>
+          </div>
+        </div>
+        {% endfor %}
+      </div>
+      <button
+        class="carousel-control-prev"
+        type="button"
+        data-bs-target="#topProjectsCarousel"
+        data-bs-slide="prev">
+        <span class="carousel-control-prev-icon"></span>
+      </button>
+      <button
+        class="carousel-control-next"
+        type="button"
+        data-bs-target="#topProjectsCarousel"
+        data-bs-slide="next">
+        <span class="carousel-control-next-icon"></span>
+      </button>
+    </div>
+  </div>
+</section>
+
+<!-- Platform Stats Section -->
+<section class="stats-section my-5">
+  <div class="container">
+    <div class="stats-wrapper rounded-4 shadow-sm">
+      <div class="stats-grid">
+        <div class="stat-item">
+          <div class="stat-icon bg-primary-light">
+            <i class="fas fa-project-diagram"></i>
+          </div>
+          <div class="stat-details">
+            <h3>{{ total_projects }}</h3>
+            <p>Total Projects</p>
+          </div>
+        </div>
+        <div class="stat-item">
+          <div class="stat-icon bg-success-light">
+            <i class="fas fa-users"></i>
+          </div>
+          <div class="stat-details">
+            <h3>{{ total_donors }}</h3>
+            <p>Total Donors</p>
+          </div>
+        </div>
+        <div class="stat-item">
+          <div class="stat-icon bg-warning-light">
+            <i class="fas fa-hand-holding-usd"></i>
+          </div>
+          <div class="stat-details">
+            <h3>₹{{ total_donated }}</h3>
+            <p>Total Donated</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Top Donors Section -->
+<section class="top-donors-section mb-5">
+  <div class="container">
+      <div class="section-header d-flex justify-content-between align-items-center mb-4">
+          <h3><i class="fas fa-trophy me-2"></i>Top Contributors</h3>
+          <div class="trophy-badges">
+              <i class="fas fa-medal text-warning"></i>
+              <i class="fas fa-medal text-secondary"></i>
+              <i class="fas fa-medal text-bronze"></i>
+          </div>
+      </div>
+
+      <div class="donors-grid">
+          {% for donor in top_donors %}
+          <div class="donor-card {% if forloop.first %}gold{% elif forloop.counter == 2 %}silver{% elif forloop.counter == 3 %}bronze{% endif %}">
+              <div class="rank-badge">
+                  {% if forloop.first %}
+                      <i class="fas fa-crown text-warning"></i>
+                  {% else %}
+                      #{{ forloop.counter }}
+                  {% endif %}
+              </div>
+              <div class="donor-avatar">
+                {% if donor.profile.profile_picture %}
+                    <img src="{{ donor.profile.profile_picture.url }}" 
+                         alt="{{ donor.username|default:'Anonymous' }}'s avatar">
+                {% else %}
+                    <img src="{% static 'images/profile.png' %}" 
+                         alt="{{ donor.username|default:'Anonymous' }}'s avatar">
+                {% endif %}
+            </div>
+              <div class="donor-info">
+                  <h5>{{ donor.username }}</h5>
+                  <p class="donation-amount">
+                      <i class="fas fa-hand-holding-usd text-success me-1"></i>
+                      ₹{{ donor.total_donated|floatformat:0 }}
+                  </p>
+                  <div class="donor-stats">
+                      <span>
+                          <i class="fas fa-project-diagram text-primary"></i>
+                          {{ donor.donation_set.count }} Projects
+                      </span>
+                      <span>
+                          <i class="fas fa-calendar-alt text-info"></i>
+                          Joined {{ donor.date_joined|date:"M Y" }}
+                      </span>
+                  </div>
+              </div>
+          </div>
+          {% empty %}
+          <div class="text-center text-muted py-4">
+              <i class="fas fa-users fa-3x mb-3"></i>
+              <p>No donors found yet. Be the first to contribute!</p>
+          </div>
+          {% endfor %}
+      </div>
+  </div>
+</section>
+
+
+<!-- Search and Categories Section -->
+<section class="search-filter-section mb-5">
+  <div class="container">
+    <div class="row">
+      <!-- Categories Sidebar -->
+      <aside class="col-lg-3 mb-4">
+        <div class="categories-wrapper rounded-4 shadow-sm p-3">
+          <h3 class="sidebar-title mb-3"><i class="fas fa-th-list me-2"></i>Categories</h3>
+          <ul class="categories-list list-unstyled">
+            <li>
+              <a 
+                href="#" 
+                class="category-filter d-flex justify-content-between align-items-center {% if not active_category %}active{% endif %}"
+                data-category="all">
+                <span>All Categories</span>
+                <span class="badge bg-primary rounded-pill">{{ total_projects }}</span>
+              </a>
+            </li>
+            {% for category in categories %}
+            <li>
+              <a 
+                href="#" 
+                class="category-filter d-flex justify-content-between align-items-center {% if category.id == active_category %}active{% endif %}"
+                data-category="{{ category.id }}">
+                <span>{{ category.name }}</span>
+                <span class="badge bg-primary rounded-pill">{{ category.projects_count }}</span>
+              </a>
+            </li>
+            {% endfor %}
+          </ul>
+        </div>
+      </aside>
+
+      <!-- Right side with search and filtered projects -->
+      <div class="col-lg-9">
+        <!-- Search Bar -->
+        <div class="search-wrapper rounded-4 shadow-sm mb-4">
+          <form id="searchForm" class="search-form">
+            <input type="hidden" name="category" id="categoryInput" value="{{ active_category|default:'' }}">
+            <div class="input-group">
+              <input
+                type="text"
+                name="q"
+                class="form-control"
+                placeholder="Search projects..."
+                value="{{ search_query }}"
+                autocomplete="off" />
+              <div class="input-group-append">
+                <button class="btn btn-primary" type="submit">
+                  <i class="fas fa-search me-2"></i> Search
+                </button>
+                {% if search_query %}
+                <button
+                  type="button"
+                  class="btn btn-outline-secondary"
+                  id="clearBtn">
+                  <i class="fas fa-times"></i>
+                </button>
+                {% endif %}
+              </div>
+            </div>
+          </form>
+        </div>
+
+        <!-- Category title and info -->
+        <div class="category-header mb-4">
+          <h2 id="categoryTitle">
+            {% if active_category %}
+              {{ active_category_name }}
+            {% else %}
+              All Projects
+            {% endif %}
+            {% if search_query %}
+              <small class="text-muted">matching "{{ search_query }}"</small>
+            {% endif %}
+          </h2>
+        </div>
+
+<!-- Projects container -->
+<div id="projectsContainer">
+  {% if projects %}
+      <div class="row g-4">
+          {% for project in projects %}
+          <div class="col-md-6 col-lg-4">
+              <div class="project-card" data-category="{{ project.category.id }}">
+                  <div class="card-img-container position-relative">
+                      <img src="{{ project.get_first_image }}" 
+                           alt="{{ project.title }}" 
+                           class="img-fluid rounded-top">
+                      <div class="category-badge">
+                          <i class="fas fa-folder me-1"></i>{{ project.category.name }}
+                      </div>
+                      <div class="progress position-absolute bottom-0 start-0 w-100" style="height: 5px;">
+                          <div class="progress-bar bg-success" 
+                               style="width: {{ project.progress }}%">
+                          </div>
+                      </div>
+                  </div>
+                  <div class="card-body">
+                      <h5 class="card-title">{{ project.title }}</h5>
+                      <p class="card-text">{{ project.details|truncatewords:15 }}</p>
+                      <div class="funding-meta d-flex justify-content-between align-items-center">
+                          <span class="badge bg-success">
+                              <i class="fas fa-chart-pie me-1"></i>{{ project.progress }}%
+                          </span>
+                          <span class="badge bg-secondary">
+                              <i class="fas fa-clock me-1"></i>{{ project.time_remaining }}
+                          </span>
+                      </div>
+                      <a href="{% url 'projects:project_detail' pk=project.pk %}" 
+                         class="btn btn-outline-primary w-100 mt-3">
+                          View Details
+                      </a>
+                  </div>
+              </div>
+          </div>
+          {% endfor %}
+      </div>
+  {% else %}
+      <div class="alert alert-info text-center">
+          <i class="fas fa-info-circle me-2"></i>
+          {% if search_query %}
+              No projects found matching "{{ search_query }}"
+              {% if active_category %}
+                  in category "{{ active_category_name }}"
+              {% endif %}
+          {% else %}
+              No projects found in this category.
+          {% endif %}
+      </div>
+  {% endif %}
+</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+
+    <!-- Five latest projects -->
+<section class="projects-section mb-5">
+  <div class="section-header d-flex justify-content-between align-items-center mb-3">
+    <h3 class="text-primary fw-bold">
+      <i class="fas fa-clock me-2"></i>Latest Projects
+    </h3>
+    <a href="{% url 'projects:project_list' %}?sort=newest&limit=5" class="btn btn-sm btn-primary px-3 rounded-pill shadow-sm">
+      View 5 Latest
+    </a>
+  </div>
+
+  <div id="latestProjectsCarousel" class="carousel slide" data-bs-ride="carousel">
+    <div class="carousel-inner">
+      {% for project in latest_projects|slice:":5" %}
+      <div class="carousel-item {% if forloop.first %}active{% endif %}">
+        <div class="row justify-content-center px-3">
+          <div class="col-md-6 col-lg-5">
+            <div class="project-card rounded-4 shadow-sm h-100 bg-white">
+              <div class="card-img-container position-relative">
+                <img
+                  src="{{ project.get_first_image }}"
+                  alt="{{ project.title }}"
+                  class="img-fluid rounded-top" />
+                <div class="progress position-absolute bottom-0 start-0 w-100" style="height: 5px;">
+                  <div class="progress-bar bg-success" style="width: {{ project.progress }}%"></div>
+                </div>
+              </div>
+              <div class="card-body d-flex flex-column">
+                <h5 class="card-title text-dark fw-bold mb-2">{{ project.title }}</h5>
+                <p class="card-text text-muted small">{{ project.details|truncatewords:20 }}</p>
+                <div class="funding-meta d-flex justify-content-between mt-auto">
+                  <span class="badge bg-success rounded-pill">
+                    <i class="fas fa-chart-pie me-1"></i>{{ project.progress }}%
+                  </span>
+                  <span class="badge bg-secondary rounded-pill">
+                    <i class="fas fa-hourglass-half me-1"></i>{{ project.time_remaining }}
+                  </span>
+                </div>
+                <a href="{% url 'projects:project_detail' pk=project.pk %}" class="btn btn-outline-primary w-100 mt-3 rounded-pill">
+                  <i class="fas fa-info-circle me-1"></i> View Details
+                </a>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      {% endfor %}
+    </div>
+
+    <!-- Controls -->
+    <button class="carousel-control-prev" type="button" data-bs-target="#latestProjectsCarousel" data-bs-slide="prev">
+      <span class="carousel-control-prev-icon bg-primary rounded-circle p-2" aria-hidden="true"></span>
+      <span class="visually-hidden">Previous</span>
+    </button>
+    <button class="carousel-control-next" type="button" data-bs-target="#latestProjectsCarousel" data-bs-slide="next">
+      <span class="carousel-control-next-icon bg-primary rounded-circle p-2" aria-hidden="true"></span>
+      <span class="visually-hidden">Next</span>
+    </button>
+  </div>
+</section>
+
+
+   
+
+
+      <!-- Newsletter Section -->
+       <hr>
+      <section class="newsletter-section container my-4">
+        <div class="newsletter-content">
+          <h2>Stay Updated</h2>
+          <p>Subscribe to our newsletter for the latest projects and updates</p>
+          <form class="newsletter-form">
+            <div class="input-group">
+              <input type="email" class="form-control" placeholder="Your email address">
+              <button class="btn btn-primary" type="submit">Subscribe</button>
+            </div>
+          </form>
+        </div>
+        <div class="newsletter-decoration">
+          <i class="fas fa-envelope-open-text"></i>
+        </div>
+      </section>
+    </div>
+  </div>
+</div>
+
+{% endblock %}
+{% block extra_css %}
+<link rel="stylesheet" href="{% static 'css/projects/home.css' %}">
+
+{% endblock %}
+{% block extra_js %}
+<script src="{% static 'js/projects/home.js' %}"></script>
+{% endblock %}
