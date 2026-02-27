@@ -1,0 +1,43 @@
+{
+  "name": "blockchain_supplychain",
+  "version": "1.0.0",
+  "description": "Pharmaceutical SupplyChain using Ethereum Blockchain Network.",
+  "main": "truffle-config.js",
+  "directories": {
+    "doc": "docs",
+    "test": "test"
+  },
+  "dependencies": {
+    "truffle": "^5.11.5",
+    "truffle-hdwallet-provider": "^1.0.2"
+  },
+  "scripts": {
+    "docs:init": "node_modules/.bin/doxity init",
+    "docs:compile": "node_modules/.bin/doxity compile",
+    "docs:develop": "node_modules/.bin/doxity develop",
+    "docs:publish": "node_modules/.bin/doxity publish",
+    "docs:build": "node_modules/.bin/doxity build",
+    "start": "cd Pharmaceutical_Supplychain-UI && npm start",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/kamalkishorm/Blockchain_SupplyChain.git"
+  },
+  "keywords": [
+    "blockahin",
+    "ethereum",
+    "supply-chain",
+    "solidity",
+    "infura",
+    "triffle-framework",
+    "metamask",
+    "smart-contracts"
+  ],
+  "author": "Kamal Kishor Mehra",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/kamalkishorm/Blockchain_SupplyChain/issues"
+  },
+  "homepage": "https://github.com/kamalkishorm/Blockchain_SupplyChain#readme"
+}

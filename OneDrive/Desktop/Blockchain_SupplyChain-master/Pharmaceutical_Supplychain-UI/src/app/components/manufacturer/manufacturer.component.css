@@ -1,0 +1,47 @@
+.manufacturer-dashboard {
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+.alt-small {
+    font-size: 16px !important;
+}
+
+.border-white-10 {
+    border-color: rgba(255, 255, 255, 0.1) !important;
+}
+
+.table-responsive {
+    border-radius: 12px;
+    overflow: hidden;
+    margin-top: 10px;
+}
+
+.pointer {
+    cursor: pointer;
+}
+
+/* Modal and Input Overrides */
+.pharma-card.bg-light {
+    background-color: #f8fafc !important;
+}
+
+.shadow-sm {
+    box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.05) !important;
+}
+
+/* Material Table Styling Override */
+.mat-table {
+    background: transparent !important;
+}
+
+.mat-header-cell {
+    color: var(--text-muted) !important;
+    font-size: 0.75rem !important;
+    font-weight: 700 !important;
+}
+
+.mat-cell {
+    color: var(--text-dark) !important;
+    padding: 12px 0 !important;
+}

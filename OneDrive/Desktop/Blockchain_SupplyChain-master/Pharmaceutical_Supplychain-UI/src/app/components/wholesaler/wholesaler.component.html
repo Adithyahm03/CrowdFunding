@@ -1,0 +1,177 @@
+<div class="container-fluid py-5">
+    <div class="row mb-4 animate-up">
+        <div class="col-md-8">
+            <h1 class="pharma-title mb-1">Wholesaler Dashboard</h1>
+            <p class="text-muted">Oversee bulk transfers, quality assurance, and supply chain liquidity</p>
+        </div>
+        <div class="col-md-4 text-right">
+            <div class="pharma-card d-inline-block px-3 py-2 text-left shadow-sm">
+                <span class="d-block text-xs uppercase font-bold text-muted mb-1">Node Consensus</span>
+                <span class="bc-badge bc-badge-verified">
+                    <i class="fas fa-microchip mr-1"></i> Sync Complete
+                </span>
+            </div>
+        </div>
+    </div>
+
+    <!-- Stats Row -->
+    <div class="row mb-5 g-4">
+        <div class="col-md-3">
+            <div class="pharma-card stat-card text-center">
+                <span class="text-muted small uppercase">Global Inbound</span>
+                <h3 class="mt-2">128</h3>
+                <span class="text-primary x-small fw-bold">From Manufacturers</span>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="pharma-card stat-card text-center">
+                <span class="text-muted small uppercase">Retail Outbound</span>
+                <h3 class="mt-2">34</h3>
+                <span class="text-info x-small fw-bold">To Distributors</span>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="pharma-card stat-card highlight-card text-white text-center">
+                <span class="text-white-50 small uppercase">Vault Valuation</span>
+                <h3 class="text-white mt-2">1.2k <span class="small h6">ETH</span></h3>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="pharma-card stat-card text-center">
+                <span class="text-muted small uppercase">Local Node</span>
+                <h3 class="mt-2 text-success">Active</h3>
+                <span class="text-muted x-small">99.9% Reliability</span>
+            </div>
+        </div>
+    </div>
+
+    <!-- Activity & Timeline Grid -->
+    <div class="row g-4 mb-5">
+        <div class="col-lg-6">
+            <div class="pharma-card h-100">
+                <h4 class="mb-4">Recent Wholesale Activity</h4>
+                <div class="activity-timeline">
+                    <div class="activity-item pb-4 border-start border-2 border-light ps-4 position-relative">
+                        <div class="activity-dot bg-success"></div>
+                        <div class="small fw-bold">Inbound Batch #721 Received</div>
+                        <p class="text-muted x-small m-0">Manufacturer signature verified</p>
+                    </div>
+                    <div class="activity-item pb-4 border-start border-2 border-light ps-4 position-relative">
+                        <div class="activity-dot bg-primary"></div>
+                        <div class="small fw-bold">Inventory Audit Complete</div>
+                        <p class="text-muted x-small m-0">Storage temperature logs uploaded to block</p>
+                    </div>
+                    <div class="activity-item ps-4 position-relative">
+                        <div class="activity-dot bg-warning"></div>
+                        <div class="small fw-bold">Node Sync</div>
+                        <p class="text-muted x-small m-0">Last block processed: #177342</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-lg-6">
+            <div class="pharma-card h-100">
+                <div class="d-flex justify-content-between align-items-center mb-4">
+                    <h4 class="m-0">Wholesale Lifecycle</h4>
+                    <span class="text-primary small fw-bold">Consensus: Verified</span>
+                </div>
+                <!-- Mock QR Generator -->
+                <div class="bg-light rounded-4 p-4 text-center">
+                    <i class="material-icons h1 m-0 text-primary">qr_code_scanner</i>
+                    <div class="small fw-bold mt-2">BULK SCANNER SERVICE</div>
+                    <p class="x-small text-muted mb-0">Scan pallet QR to verify whole consignment</p>
+                </div>
+                <div class="mt-4">
+                    <div class="d-flex justify-content-between small mb-1">
+                        <span>Downstream Readiness</span>
+                        <span>82%</span>
+                    </div>
+                    <div class="progress" style="height: 6px;">
+                        <div class="progress-bar bg-success" style="width: 82%"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="row">
+        <!-- Wholesale Registry -->
+        <div class="col-md-8">
+            <div class="pharma-card mb-4 animate-up" style="animation-delay: 0.5s">
+                <div class="d-flex justify-content-between align-items-center mb-4">
+                    <h5 class="mb-0">Bulk Asset Registry</h5>
+                    <button class="btn btn-dark btn-sm px-4 rounded-pill" (click)="openCreateModal()">
+                        <i class="fas fa-barcode mr-2"></i> Register New Asset
+                    </button>
+                </div>
+
+                <div class="table-responsive">
+                    <table class="table pharma-table">
+                        <thead>
+                            <tr>
+                                <th>Registry ID</th>
+                                <th>Medicine Batch</th>
+                                <th>Manufacturer</th>
+                                <th>Status</th>
+                                <th>Action</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <!-- Mock Row -->
+                            <tr>
+                                <td><code class="text-xs font-mono">0x123...abc</code></td>
+                                <td><strong>Paracetamol Bulk</strong></td>
+                                <td>Global Pharma Inc.</td>
+                                <td><span class="bc-badge bc-badge-verified">Secured</span></td>
+                                <td>
+                                    <button class="btn btn-outline-dark btn-xs rounded-circle mr-1">
+                                        <i class="fas fa-signature"></i>
+                                    </button>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td><code class="text-xs font-mono">0xdef...456</code></td>
+                                <td><strong>Insulin Storage</strong></td>
+                                <td>BioHealth Labs</td>
+                                <td><span class="bc-badge bc-badge-verified">Secured</span></td>
+                                <td>
+                                    <button class="btn btn-outline-dark btn-xs rounded-circle mr-1">
+                                        <i class="fas fa-signature"></i>
+                                    </button>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+
+        <!-- Wholesale Profile -->
+        <div class="col-md-4">
+            <div class="pharma-card animate-up" style="animation-delay: 0.6s">
+                <h5 class="mb-3 border-bottom pb-2">Wholesaler Profile</h5>
+                <div class="d-flex align-items-center mb-4">
+                    <div class="bg-dark rounded-circle text-white d-flex align-items-center justify-content-center mr-3 shadow"
+                        style="width: 60px; height: 60px;">
+                        <i class="fas fa-network-wired fa-2x"></i>
+                    </div>
+                    <div>
+                        <h6 class="mb-0">{{userProfile.name || 'Prime Wholesale Ltd'}}</h6>
+                        <small class="text-muted">{{userProfile.location || 'Global Logistics Hub'}}</small>
+                    </div>
+                </div>
+
+                <div class="p-3 bg-light rounded mt-3">
+                    <div class="d-flex justify-content-between mb-2">
+                        <span class="small text-muted">Network Role:</span>
+                        <span class="small font-bold text-dark">Primary Wholesaler</span>
+                    </div>
+                    <div class="d-flex justify-content-between">
+                        <span class="small text-muted">Blockchain ID:</span>
+                        <span class="small text-truncate ml-3 font-mono text-xs">{{userProfile.ethAddress}}</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

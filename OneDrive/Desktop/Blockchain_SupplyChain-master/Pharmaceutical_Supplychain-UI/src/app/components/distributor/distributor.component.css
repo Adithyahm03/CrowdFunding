@@ -1,0 +1,65 @@
+.pharma-title {
+    color: var(--primary-color, #0A3D62);
+    font-weight: 700;
+    letter-spacing: -0.02em;
+}
+
+.pharma-table th {
+    background: #F8FAFC;
+    color: #64748B;
+    text-transform: uppercase;
+    font-size: 0.7rem;
+    font-weight: 700;
+    letter-spacing: 0.05em;
+    border-top: none;
+}
+
+.pharma-table td {
+    vertical-align: middle;
+    color: #334155;
+    border-bottom: 1px solid #F1F5F9;
+}
+
+.btn-xs {
+    width: 28px;
+    height: 28px;
+    padding: 0;
+    font-size: 0.75rem;
+    line-height: 26px;
+}
+
+.bg-gray-50 {
+    background-color: #F8FAFC;
+}
+
+.font-bold {
+    font-weight: 700;
+}
+
+.text-xs {
+    font-size: 0.75rem;
+}
+
+.font-mono {
+    font-family: 'SFMono-Regular', Consolas, 'Liberation Mono', Menlo, monospace;
+}
+
+.uppercase {
+    text-transform: uppercase;
+}
+
+.animate-up {
+    animation: slideUp 0.6s cubic-bezier(0.16, 1, 0.3, 1) both;
+}
+
+@keyframes slideUp {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}

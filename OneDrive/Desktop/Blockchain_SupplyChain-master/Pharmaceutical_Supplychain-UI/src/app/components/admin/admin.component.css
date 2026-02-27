@@ -1,0 +1,62 @@
+.admin-dashboard {
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+.stat-card {
+    border-left: 4px solid var(--primary-blue);
+}
+
+.highlight-card {
+    background: linear-gradient(135deg, var(--primary-blue) 0%, #062c47 100%);
+    border: none;
+}
+
+.highlight-card h3,
+.highlight-card span,
+.highlight-card p {
+    color: white;
+}
+
+.pharma-modal {
+    border-radius: 28px;
+    overflow: hidden;
+    border: none;
+    box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
+}
+
+.uppercase {
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
+
+.font-monospace {
+    font-family: 'SFMono-Regular', Consolas, 'Liberation Mono', Menlo, monospace !important;
+}
+
+.table-responsive {
+    border-radius: 12px;
+    overflow: hidden;
+}
+
+/* Material Table Styling Override */
+.mat-table {
+    background: transparent !important;
+}
+
+.mat-header-cell {
+    color: var(--text-muted) !important;
+    font-size: 0.75rem !important;
+    font-weight: 700 !important;
+    border-bottom: 1px solid #f1f5f9 !important;
+}
+
+.mat-cell {
+    color: var(--text-dark) !important;
+    padding: 20px 0 !important;
+    border-bottom: 1px solid #f1f5f9 !important;
+}
+
+.mat-paginator {
+    border-top: 1px solid #f1f5f9;
+}

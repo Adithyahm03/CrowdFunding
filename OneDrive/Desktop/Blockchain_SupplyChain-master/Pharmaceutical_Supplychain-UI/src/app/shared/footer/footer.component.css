@@ -1,0 +1,12 @@
+.pharma-footer {
+    background: #062c47;
+    border-top: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+.text-white-50 {
+    color: rgba(255, 255, 255, 0.5) !important;
+}
+
+.footer-links a:hover {
+    color: var(--secondary-green) !important;
+}

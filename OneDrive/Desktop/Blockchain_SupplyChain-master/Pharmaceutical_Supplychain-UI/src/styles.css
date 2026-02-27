@@ -1,0 +1,115 @@
+/* Global Design System for Blockchain Pharmaceutical Supply Chain */
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&family=Roboto:wght@300;400;500&display=swap');
+@import '~bootstrap/dist/css/bootstrap.css';
+@import '~@angular/material/prebuilt-themes/deeppurple-amber.css';
+@import 'https://fonts.googleapis.com/icon?family=Material+Icons';
+@import '~sweetalert2/dist/sweetalert2.css';
+
+:root {
+    --primary-blue: #0A3D62;
+    --secondary-green: #1ABC9C;
+    --bg-light: #F4F9FB;
+    --white: #ffffff;
+    --text-dark: #1e293b;
+    --text-muted: #64748b;
+    --card-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.05), 0 8px 10px -6px rgba(0, 0, 0, 0.05);
+    --transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+body {
+    background-color: var(--bg-light);
+    color: var(--text-dark);
+    font-family: 'Roboto', sans-serif;
+    margin: 0;
+    overflow-x: hidden;
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+    font-family: 'Poppins', sans-serif;
+    color: var(--primary-blue);
+    font-weight: 600;
+}
+
+/* Card System */
+.pharma-card {
+    background: var(--white);
+    border-radius: 20px;
+    padding: 24px;
+    box-shadow: var(--card-shadow);
+    border: 1px solid rgba(10, 61, 98, 0.05);
+    transition: var(--transition);
+}
+
+.pharma-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1);
+}
+
+/* Blockchain Badges */
+.bc-badge {
+    display: inline-flex;
+    align-items: center;
+    padding: 6px 12px;
+    border-radius: 50px;
+    font-size: 0.75rem;
+    font-weight: 600;
+    letter-spacing: 0.5px;
+    text-transform: uppercase;
+}
+
+.bc-badge-verified {
+    background-color: rgba(26, 188, 156, 0.1);
+    color: var(--secondary-green);
+    border: 1px solid rgba(26, 188, 156, 0.2);
+}
+
+.bc-badge-pending {
+    background-color: rgba(56, 189, 248, 0.1);
+    color: #0284c7;
+    border: 1px solid rgba(56, 189, 248, 0.2);
+}
+
+/* Form Styles */
+.form-control {
+    border-radius: 12px;
+    padding: 12px 16px;
+    border: 1px solid #e2e8f0;
+    background-color: #f8fafc;
+    transition: var(--transition);
+}
+
+.form-control:focus {
+    border-color: var(--primary-blue);
+    box-shadow: 0 0 0 3px rgba(10, 61, 98, 0.1);
+    background-color: var(--white);
+}
+
+.btn-primary-pharma {
+    background-color: var(--primary-blue);
+    color: var(--white);
+    border: none;
+    border-radius: 12px;
+    padding: 12px 24px;
+    font-weight: 600;
+    transition: var(--transition);
+}
+
+.btn-primary-pharma:hover {
+    background-color: #062c47;
+    transform: scale(1.02);
+}
+
+/* Utility Layouts */
+#page-wrapper {
+    padding-top: 100px;
+    min-height: 100vh;
+}
+
+.section-padding {
+    padding: 80px 0;
+}

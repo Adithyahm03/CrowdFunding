@@ -1,0 +1,88 @@
+.tracking-container {
+    background-color: var(--bg-light);
+    min-height: 100vh;
+}
+
+.search-box-large {
+    border-radius: 20px;
+    background: white;
+    box-shadow: 0 15px 35px rgba(10, 61, 98, 0.1);
+    transition: var(--transition);
+}
+
+.search-box-large:focus-within {
+    box-shadow: 0 15px 45px rgba(10, 61, 98, 0.15);
+    transform: translateY(-2px);
+}
+
+.search-box-large input:focus {
+    box-shadow: none;
+}
+
+/* Vertical Timeline Logic */
+.pharma-timeline {
+    position: relative;
+    padding-left: 20px;
+}
+
+.timeline-event {
+    display: flex;
+    position: relative;
+}
+
+.event-indicator {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 40px;
+}
+
+.event-indicator .dot {
+    width: 36px;
+    height: 36px;
+    background: #e2e8f0;
+    border-radius: 50%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    color: var(--text-muted);
+    z-index: 2;
+    transition: var(--transition);
+}
+
+.timeline-event.active .dot {
+    background: var(--secondary-green);
+    color: white;
+}
+
+.event-indicator .line {
+    width: 2px;
+    flex-grow: 1;
+    background: #e2e8f0;
+    z-index: 1;
+}
+
+.timeline-event.active .line {
+    background: var(--secondary-green);
+}
+
+.event-body {
+    flex-grow: 1;
+}
+
+.highlight-card {
+    background: linear-gradient(135deg, var(--primary-blue) 0%, #062c47 100%);
+    border: none;
+}
+
+.font-monospace {
+    font-family: 'SFMono-Regular', Consolas, 'Liberation Mono', Menlo, monospace !important;
+}
+
+.pointer {
+    cursor: pointer;
+}
+
+.qr-mock {
+    opacity: 0.8;
+}

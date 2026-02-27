@@ -1,0 +1,242 @@
+<div id="page-wrapper" class="supplier-dashboard">
+    <!-- Dashboard Header -->
+    <div class="dashboard-header mb-4">
+        <div class="row align-items-center">
+            <div class="col-md-6">
+                <h2 class="m-0">Supplier Dashboard</h2>
+                <p class="text-muted small m-0">Genesis stage of the Pharmaceutical Supply Chain</p>
+            </div>
+            <div class="col-md-6 text-end">
+                <span class="bc-badge bc-badge-verified me-2">Authenticated: {{name}}</span>
+                <span class="text-muted small">{{account | slice:0:6}}...{{account | slice:-4}}</span>
+            </div>
+        </div>
+    </div>
+
+    <!-- Alert / Status -->
+    <div class="alert alert-info py-2 small d-flex align-items-center mb-4" id="divOngoingTransaction"
+        style="display: none">
+        <i class="material-icons me-2">auto_fix_high</i>
+        <span>Network Alert: <span id="linkOngoingTransaction">Scanning Blockchain for updates...</span></span>
+    </div>
+
+    <!-- Profile & Quick Stats -->
+    <div class="row g-4 mb-4">
+        <div class="col-md-4">
+            <div class="pharma-card profile-card h-100">
+                <div class="d-flex align-items-center mb-4">
+                    <div class="avatar-box me-3">
+                        <i class="material-icons h1 m-0 text-white">agriculture</i>
+                    </div>
+                    <div>
+                        <h4 class="m-0">{{name}}</h4>
+                        <span class="bc-badge bc-badge-verified mt-1">Certified Supplier</span>
+                    </div>
+                </div>
+                <div class="profile-details">
+                    <div class="d-flex justify-content-between mb-2">
+                        <span class="text-muted small">Location:</span>
+                        <span class="small fw-bold">{{location}}</span>
+                    </div>
+                    <div class="d-flex justify-content-between mb-2">
+                        <span class="text-muted small">Network Role:</span>
+                        <span class="small fw-bold">Genesis Node</span>
+                    </div>
+                    <button class="btn btn-outline-secondary w-100 btn-sm mt-3">Configure Node Settings</button>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-8">
+            <div
+                class="pharma-card stat-card highlight-card h-100 d-flex flex-column justify-content-center text-white">
+                <div class="row text-center">
+                    <div class="col-4 border-end border-white-10">
+                        <span class="small text-white-50 uppercase">Active Batches</span>
+                        <h2 class="text-white mt-1">{{packageCount}}</h2>
+                    </div>
+                    <div class="col-4 border-end border-white-10">
+                        <span class="small text-white-50 uppercase">Network Balance</span>
+                        <h2 class="text-white mt-1">{{balance | slice:0:6}} <span
+                                class="small h6 text-white-50">ETH</span></h2>
+                    </div>
+                    <div class="col-4">
+                        <span class="small text-white-50 uppercase">Reliability Score</span>
+                        <h2 class="text-white mt-1">99.8<span class="small h6 text-white-50">%</span></h2>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Dynamic Activity Grid -->
+    <div class="row g-4 mb-5">
+        <div class="col-lg-6">
+            <div class="pharma-card h-100">
+                <h4 class="mb-4">Recent Blockchain Activity</h4>
+                <div class="activity-timeline">
+                    <div class="activity-item pb-4 border-start border-2 border-light ps-4 position-relative">
+                        <div class="activity-dot bg-success"></div>
+                        <div class="small fw-bold">Batch #{{packageCount}} Created</div>
+                        <p class="text-muted x-small m-0">Genesis record written to block #177245</p>
+                    </div>
+                    <div class="activity-item pb-4 border-start border-2 border-light ps-4 position-relative">
+                        <div class="activity-dot bg-primary"></div>
+                        <div class="small fw-bold">Transporter Assigned</div>
+                        <p class="text-muted x-small m-0">Handover authorization complete</p>
+                    </div>
+                    <div class="activity-item ps-4 position-relative">
+                        <div class="activity-dot bg-warning"></div>
+                        <div class="small fw-bold">Wallet Synchronized</div>
+                        <p class="text-muted x-small m-0">Local node sync successful</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-lg-6">
+            <div class="pharma-card h-100">
+                <div class="d-flex justify-content-between align-items-center mb-4">
+                    <h4 class="m-0">System Timeline</h4>
+                    <span class="text-success small"><i class="material-icons align-middle small">check_circle</i> Nodes
+                        Operational</span>
+                </div>
+                <div class="row g-2">
+                    <div class="col-12 p-3 bg-light rounded-4 d-flex align-items-center mb-2">
+                        <i class="material-icons text-primary me-3">qr_code_2</i>
+                        <div>
+                            <div class="fw-bold small">QR Generation Service</div>
+                            <span class="text-muted x-small">Ready for next batch production</span>
+                        </div>
+                    </div>
+                    <div class="col-12 p-3 bg-light rounded-4 d-flex align-items-center">
+                        <i class="material-icons text-info me-3">hub</i>
+                        <div>
+                            <div class="fw-bold small">Manufacturer Node</div>
+                            <span class="text-muted x-small">Connected: {{packageCount > 0 ? 'Handshake Active' :
+                                'Idle'}}</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Package Table Section -->
+    <div class="pharma-card">
+        <div class="d-flex justify-content-between align-items-center mb-4">
+            <h4 class="m-0">Genesis Packages (Raw Materials)</h4>
+            <div class="actions">
+                <button class="btn btn-outline-secondary me-2 btn-sm" (click)="getPackageCount()">
+                    <i class="material-icons align-middle small">sync</i> Refresh
+                </button>
+                <button class="btn btn-primary-pharma btn-sm" data-toggle="modal" data-target="#createpackage1">
+                    <i class="material-icons align-middle small">add_box</i> Initiate New Batch
+                </button>
+            </div>
+        </div>
+
+        <div class="table-responsive">
+            <table mat-table [dataSource]="dataSource" class="w-100">
+                <ng-container matColumnDef="batchid" sticky>
+                    <th mat-header-cell *matHeaderCellDef> Batch ID </th>
+                    <td mat-cell *matCellDef="let element">
+                        <span class="batch-link fw-bold pointer text-primary" data-toggle="modal"
+                            data-target="#batchidinfo1" (click)="getPackageTx(element)">
+                            #{{element.BatchID}}
+                        </span>
+                    </td>
+                </ng-container>
+                <ng-container matColumnDef="description">
+                    <th mat-header-cell *matHeaderCellDef> Material Details </th>
+                    <td mat-cell *matCellDef="let element"> {{element.Description}} </td>
+                </ng-container>
+                <ng-container matColumnDef="farmername">
+                    <th mat-header-cell *matHeaderCellDef> Farm Source </th>
+                    <td mat-cell *matCellDef="let element"> {{element.FarmerName}} </td>
+                </ng-container>
+                <ng-container matColumnDef="quantity">
+                    <th mat-header-cell *matHeaderCellDef> Units </th>
+                    <td mat-cell *matCellDef="let element"> {{element.Quantity}} </td>
+                </ng-container>
+                <ng-container matColumnDef="status">
+                    <th mat-header-cell *matHeaderCellDef> Chain Status </th>
+                    <td mat-cell *matCellDef="let element">
+                        <span class="bc-badge"
+                            [ngClass]="{'bc-badge-verified': element.Status === 'Delivered', 'bc-badge-pending': element.Status !== 'Delivered'}">
+                            {{element.Status}}
+                        </span>
+                    </td>
+                </ng-container>
+                <ng-container matColumnDef="star" stickyEnd>
+                    <th mat-header-cell *matHeaderCellDef></th>
+                    <td mat-cell *matCellDef="let element">
+                        <i class="material-icons text-muted">more_vert</i>
+                    </td>
+                </ng-container>
+
+                <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+                <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+            </table>
+            <mat-paginator [pageSizeOptions]="[5, 10, 20]" showFirstLastButtons class="bg-transparent"></mat-paginator>
+        </div>
+    </div>
+
+    <!-- Create Package Modal -->
+    <div class="modal fade" id="createpackage1" tabindex="-1">
+        <div class="modal-dialog modal-dialog-centered modal-lg">
+            <div class="modal-content pharma-modal">
+                <div class="modal-header border-0 pb-0">
+                    <h5 class="modal-title fw-bold">Initiate Raw Material Batch</h5>
+                    <button type="button" class="btn-close" data-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body p-4">
+                    <p class="text-muted small mb-4">Defining the origin of the supply chain. This data is recorded as
+                        the genesis block for the batch.</p>
+                    <form [formGroup]="packageDetails">
+                        <div class="row g-3">
+                            <div class="col-md-6 mb-3">
+                                <label class="small fw-bold">Product Description</label>
+                                <input type="text" formControlName="description" class="form-control"
+                                    placeholder="e.g. Purified Water, Citric Acid">
+                            </div>
+                            <div class="col-md-6 mb-3">
+                                <label class="small fw-bold">Genesis Farm Name</label>
+                                <input type="text" formControlName="farmername" class="form-control"
+                                    placeholder="Source farm / facility">
+                            </div>
+                        </div>
+                        <div class="form-group mb-3">
+                            <label class="small fw-bold">Farm Geographic Location</label>
+                            <div class="row g-2" formGroupName="location">
+                                <div class="col"><input type="text" formControlName="latitude" class="form-control"
+                                        placeholder="Latitude"></div>
+                                <div class="col"><input type="text" formControlName="longitude" class="form-control"
+                                        placeholder="Longitude"></div>
+                            </div>
+                        </div>
+                        <div class="row g-3">
+                            <div class="col-md-6 mb-3">
+                                <label class="small fw-bold">Quantity (Units)</label>
+                                <input type="number" formControlName="quantity" class="form-control"
+                                    placeholder="Total volume/count">
+                            </div>
+                            <div class="col-md-6 mb-3">
+                                <label class="small fw-bold">Assigned Logistics Partner</label>
+                                <input type="text" formControlName="shipper" class="form-control"
+                                    placeholder="Transporter Wallet Address">
+                            </div>
+                        </div>
+                        <div class="form-group mb-4">
+                            <label class="small fw-bold">Target Manufacturing Facility</label>
+                            <input type="text" formControlName="receiver" class="form-control"
+                                placeholder="Manufacturer Wallet Address">
+                        </div>
+                        <button type="button" class="btn btn-primary-pharma w-100 py-3" (click)="createPackage()"
+                            [disabled]="!packageDetails.valid">
+                            SIGN & WRITE TO BLOCKCHAIN
+                        </button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

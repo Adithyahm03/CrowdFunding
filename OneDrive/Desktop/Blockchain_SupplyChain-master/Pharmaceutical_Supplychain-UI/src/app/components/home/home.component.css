@@ -1,0 +1,112 @@
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap');
+
+.hero-section {
+    padding: 120px 0 80px;
+}
+
+.hero-text h1 {
+    font-size: 3.5rem;
+    line-height: 1.1;
+    margin-bottom: 24px;
+    letter-spacing: -1px;
+}
+
+.hero-text .lead {
+    color: var(--text-muted);
+    font-size: 1.25rem;
+}
+
+.btn-outline-primary-pharma {
+    border: 2px solid var(--primary-blue);
+    color: var(--primary-blue);
+    border-radius: 12px;
+    padding: 12px 24px;
+    font-weight: 600;
+}
+
+/* Workflow Visualization Styles */
+.workflow-track {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    padding: 60px 0;
+    position: relative;
+    max-width: 1000px;
+    margin: 0 auto;
+}
+
+.workflow-step {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    position: relative;
+    z-index: 2;
+}
+
+.step-icon {
+    width: 64px;
+    height: 64px;
+    background: var(--white);
+    border: 2px solid var(--primary-blue);
+    border-radius: 50%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-bottom: 16px;
+    color: var(--primary-blue);
+    transition: var(--transition);
+}
+
+.workflow-step:hover .step-icon {
+    background: var(--primary-blue);
+    color: var(--white);
+    transform: scale(1.1);
+}
+
+.step-content h5 {
+    font-size: 0.9rem;
+    margin-bottom: 4px;
+}
+
+.step-status {
+    font-size: 0.7rem;
+    color: var(--secondary-green);
+    font-weight: 600;
+}
+
+.connector {
+    position: absolute;
+    height: 2px;
+    background: #e2e8f0;
+    width: 100%;
+    top: 32px;
+    left: 50%;
+    z-index: 1;
+}
+
+/* Login Components */
+.login-icon-box {
+    width: 80px;
+    height: 80px;
+    background: rgba(10, 61, 98, 0.05);
+    border-radius: 20px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    color: var(--primary-blue);
+}
+
+.login-icon-box i {
+    font-size: 40px;
+}
+
+.hero-image img {
+    border-radius: 24px !important;
+    transform: perspective(1000px) rotateY(-5deg);
+    transition: var(--transition);
+}
+
+.hero-image:hover img {
+    transform: perspective(1000px) rotateY(0deg);
+}

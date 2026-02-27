@@ -1,0 +1,192 @@
+<div id="page-wrapper" class="admin-dashboard">
+    <div class="dashboard-header mb-4">
+        <div class="row align-items-center">
+            <div class="col-md-6">
+                <h2 class="m-0">Admin Dashboard</h2>
+                <p class="text-muted small m-0">System Governance & User Management</p>
+            </div>
+            <div class="col-md-6 text-end">
+                <span class="bc-badge bc-badge-verified me-2">Connected: Mainnet Node</span>
+                <span class="text-muted small">{{account | slice:0:6}}...{{account | slice:-4}}</span>
+            </div>
+        </div>
+    </div>
+
+    <!-- Analytics Cards -->
+    <div class="row g-4 mb-5">
+        <div class="col-md-3">
+            <div class="pharma-card stat-card">
+                <div class="d-flex align-items-center justify-content-between mb-3">
+                    <span class="text-muted small fw-bold uppercase">Total Users</span>
+                    <i class="material-icons text-primary">groups</i>
+                </div>
+                <h3>{{userCount}}</h3>
+                <div class="progress mt-3" style="height: 4px;">
+                    <div class="progress-bar bg-primary" style="width: 70%"></div>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="pharma-card stat-card">
+                <div class="d-flex align-items-center justify-content-between mb-3">
+                    <span class="text-muted small fw-bold uppercase">ETH Balance</span>
+                    <i class="material-icons text-warning">account_balance_wallet</i>
+                </div>
+                <h3>{{balance | slice:0:6}}</h3>
+                <p class="text-muted small m-0">Native Token Assets</p>
+            </div>
+        </div>
+        <div class="col-md-6">
+            <div class="pharma-card stat-card highlight-card">
+                <div class="d-flex align-items-center justify-content-between mb-3">
+                    <span class="text-white small fw-bold uppercase">Smart Contract Address</span>
+                    <i class="material-icons text-white">description</i>
+                </div>
+                <h5 class="text-white font-monospace">{{contractAddress}}</h5>
+                <p class="text-white-50 small m-0">Live on Ethereum Network</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Shipment & Logs Grid -->
+    <div class="row g-4 mb-5">
+        <div class="col-lg-7">
+            <div class="pharma-card h-100">
+                <div class="d-flex justify-content-between align-items-center mb-4">
+                    <h4 class="m-0">Shipment Monitoring</h4>
+                    <span class="badge bg-primary-light text-primary py-2 px-3 rounded-pill small">6 Active</span>
+                </div>
+                <div class="shipment-list">
+                    <div class="shipment-item p-3 bg-light rounded-4 mb-3" *ngFor="let ship of shipmentMonitoring">
+                        <div class="d-flex justify-content-between align-items-center mb-2">
+                            <span class="fw-bold">ID: {{ship.id}}</span>
+                            <span class="bc-badge bc-badge-verified">{{ship.status}}</span>
+                        </div>
+                        <div class="row small text-muted mb-2">
+                            <div class="col-6">From: {{ship.origin}}</div>
+                            <div class="col-6">To: {{ship.destination}}</div>
+                        </div>
+                        <div class="progress" style="height: 6px;">
+                            <div class="progress-bar" [style.width]="ship.timeline"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-lg-5">
+            <div class="pharma-card h-100">
+                <h4 class="mb-4">Blockchain Logs</h4>
+                <div class="log-entry p-3 border-start border-4 border-primary bg-light mb-3"
+                    *ngFor="let log of transactionLogs">
+                    <div class="d-flex justify-content-between align-items-start">
+                        <div>
+                            <div class="fw-bold small">{{log.type}}</div>
+                            <code class="x-small d-block mt-1">{{log.hash}}</code>
+                        </div>
+                        <span class="x-small text-muted">{{log.time}}</span>
+                    </div>
+                </div>
+                <button class="btn btn-outline-secondary w-100 mt-2">View Full Explorer</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- User Table Section -->
+    <div class="pharma-card mb-5">
+        <div class="d-flex justify-content-between align-items-center mb-4">
+            <h4 class="m-0">Participant Registry</h4>
+            <div class="actions">
+                <button class="btn btn-outline-secondary me-2 btn-sm" (click)="refreshList()">
+                    <i class="material-icons align-middle small">refresh</i> Sync
+                </button>
+                <button class="btn btn-primary-pharma btn-sm" data-toggle="modal" data-target="#createuser1">
+                    <i class="material-icons align-middle small">person_add</i> Register Participant
+                </button>
+            </div>
+        </div>
+
+        <div class="alert alert-info py-2 small d-flex align-items-center mb-4" id="divOngoingTransaction"
+            style="display: none">
+            <i class="material-icons me-2">info</i>
+            <span>Recent Action: <span id="linkOngoingTransaction">None</span></span>
+        </div>
+
+        <div class="table-responsive">
+            <table mat-table [dataSource]="dataSource" class="w-100">
+                <ng-container matColumnDef="ethaddress">
+                    <th mat-header-cell *matHeaderCellDef> Wallet Address </th>
+                    <td mat-cell *matCellDef="let element" class="font-monospace small">
+                        {{element.EthAddress | slice:0:10}}...
+                    </td>
+                </ng-container>
+                <ng-container matColumnDef="name">
+                    <th mat-header-cell *matHeaderCellDef> Full Name </th>
+                    <td mat-cell *matCellDef="let element" class="fw-bold"> {{element.Name}} </td>
+                </ng-container>
+                <ng-container matColumnDef="location">
+                    <th mat-header-cell *matHeaderCellDef> Region </th>
+                    <td mat-cell *matCellDef="let element"> {{element.Location}} </td>
+                </ng-container>
+                <ng-container matColumnDef="role">
+                    <th mat-header-cell *matHeaderCellDef> System Role </th>
+                    <td mat-cell *matCellDef="let element">
+                        <span class="bc-badge"
+                            [ngClass]="{'bc-badge-verified': element.Role !== 'NoRole', 'bc-badge-pending': element.Role === 'NoRole'}">
+                            {{element.Role}}
+                        </span>
+                    </td>
+                </ng-container>
+
+                <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+                <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+            </table>
+            <mat-paginator [pageSizeOptions]="[5, 10, 20]" showFirstLastButtons class="bg-transparent"></mat-paginator>
+        </div>
+    </div>
+
+    <!-- Registration Modal -->
+    <div class="modal fade" id="createuser1" tabindex="-1">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content pharma-modal">
+                <div class="modal-header border-0 pb-0">
+                    <h5 class="modal-title fw-bold">Register New Participant</h5>
+                    <button type="button" class="btn-close" data-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body p-4">
+                    <p class="text-muted small mb-4">All registrations are permanently written to the blockchain. Ensure
+                        accuracy.</p>
+                    <form [formGroup]="registerUser">
+                        <div class="form-group mb-3">
+                            <label class="small fw-bold">Ethereum Wallet Address</label>
+                            <input type="text" formControlName="ethaddress" class="form-control" placeholder="0x...">
+                        </div>
+                        <div class="form-group mb-3">
+                            <label class="small fw-bold">Full Name / Organization</label>
+                            <input type="text" formControlName="name" class="form-control"
+                                placeholder="e.g. Pfizer Inc.">
+                        </div>
+                        <div class="form-group mb-3">
+                            <label class="small fw-bold">Geographic Location</label>
+                            <div class="row g-2" formGroupName="location">
+                                <div class="col"><input type="text" formControlName="latitude" class="form-control"
+                                        placeholder="Lat"></div>
+                                <div class="col"><input type="text" formControlName="longitude" class="form-control"
+                                        placeholder="Long"></div>
+                            </div>
+                        </div>
+                        <div class="form-group mb-4">
+                            <label class="small fw-bold">Assigned Supply Chain Role</label>
+                            <select class="form-control form-select" formControlName="rrole">
+                                <option *ngFor="let rr of Roles" [value]="rr.value">{{rr.role}}</option>
+                            </select>
+                        </div>
+                        <button type="button" class="btn btn-primary-pharma w-100 py-3" (click)="userRegister()"
+                            [disabled]="!registerUser.valid">
+                            CONFIRM BLOCKCHAIN REGISTRATION
+                        </button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,182 @@
+<div id="page-wrapper" class="transporter-dashboard">
+    <!-- Dashboard Header -->
+    <div class="dashboard-header mb-4">
+        <div class="row align-items-center">
+            <div class="col-md-6">
+                <h2 class="m-0">Transporter Dashboard</h2>
+                <p class="text-muted small m-0">Secure Transit, Delivery Verification & Fleet Management</p>
+            </div>
+            <div class="col-md-6 text-end">
+                <span class="bc-badge bc-badge-verified me-2">Carrier Verified: {{name}}</span>
+                <span class="text-muted small">{{account | slice:0:6}}...{{account | slice:-4}}</span>
+            </div>
+        </div>
+    </div>
+
+    <!-- Logistics Activity Grid -->
+    <div class="row g-4 mb-5">
+        <div class="col-lg-6">
+            <div class="pharma-card h-100">
+                <h4 class="mb-4">Recent Logistics Actions</h4>
+                <div class="activity-timeline">
+                    <div class="activity-item pb-4 border-start border-2 border-light ps-4 position-relative">
+                        <div class="activity-dot bg-success"></div>
+                        <div class="small fw-bold">Consignment #{{packageCount}} Loaded</div>
+                        <p class="text-muted x-small m-0">Transporter signature verified on-chain</p>
+                    </div>
+                    <div class="activity-item pb-4 border-start border-2 border-light ps-4 position-relative">
+                        <div class="activity-dot bg-primary"></div>
+                        <div class="small fw-bold">Route Optimized</div>
+                        <p class="text-muted x-small m-0">GPS coordinates updated in metadata</p>
+                    </div>
+                    <div class="activity-item ps-4 position-relative">
+                        <div class="activity-dot bg-warning"></div>
+                        <div class="small fw-bold">Audit Request</div>
+                        <p class="text-muted x-small m-0">Manufacturer node requested transit logs</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-lg-6">
+            <div class="pharma-card h-100">
+                <div class="d-flex justify-content-between align-items-center mb-4">
+                    <h4 class="m-0">Shipment Timeline</h4>
+                    <span class="text-primary small fw-bold">Fulfillment: {{packageCount > 0 ? '75%' : '0%'}}</span>
+                </div>
+                <div class="timeline-stepper">
+                    <div class="step-line d-flex justify-content-between position-relative">
+                        <div class="step active text-center">
+                            <i class="material-icons">inventory</i>
+                            <div class="x-small mt-1">Pickup</div>
+                        </div>
+                        <div class="step active text-center">
+                            <i class="material-icons">local_shipping</i>
+                            <div class="x-small mt-1">Transit</div>
+                        </div>
+                        <div class="step text-center text-muted">
+                            <i class="material-icons">done_all</i>
+                            <div class="x-small mt-1">Delivery</div>
+                        </div>
+                    </div>
+                </div>
+                <!-- Mock QR Scanner Placeholder -->
+                <div class="qr-mock-box mt-4 p-4 bg-light rounded-4 text-center border-dashed border-2">
+                    <i class="material-icons h1 m-0 text-muted">qr_code_scanner</i>
+                    <div class="small fw-bold mt-2">QR SCANNER READY</div>
+                    <p class="x-small text-muted mb-0">Scan batch label to update status</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Consignment Table Section -->
+    <div class="pharma-card">
+        <div class="d-flex justify-content-between align-items-center mb-4">
+            <h4 class="m-0">Active Shipments (Blockchain Verified)</h4>
+            <div class="actions">
+                <button class="btn btn-outline-secondary btn-sm" (click)="transportCount()">
+                    <i class="material-icons align-middle small me-1">sync</i> Sync Shipments
+                </button>
+            </div>
+        </div>
+
+        <div class="table-responsive">
+            <table mat-table [dataSource]="dataSource" class="w-100">
+                <ng-container matColumnDef="txtype">
+                    <th mat-header-cell *matHeaderCellDef> Service Type </th>
+                    <td mat-cell *matCellDef="let element">
+                        <span class="bc-badge"
+                            [ngClass]="{'bc-badge-verified': element.TxType == 0, 'bc-badge-pending': element.TxType != 0}">
+                            {{element.TxType == 0 ? 'Genesis Transit' : 'Inter-Node Transit'}}
+                        </span>
+                    </td>
+                </ng-container>
+                <ng-container matColumnDef="batchid" sticky>
+                    <th mat-header-cell *matHeaderCellDef> Batch ID </th>
+                    <td mat-cell *matCellDef="let element">
+                        <span class="fw-bold text-primary pointer" data-toggle="modal" data-target="#batchidinfo1"
+                            (click)="getPackageTx(element)">
+                            #{{element.BatchID | slice:0:10}}...
+                        </span>
+                    </td>
+                </ng-container>
+                <ng-container matColumnDef="location">
+                    <th mat-header-cell *matHeaderCellDef> Current Region </th>
+                    <td mat-cell *matCellDef="let element"> {{element.FarmLocation}} </td>
+                </ng-container>
+                <ng-container matColumnDef="from">
+                    <th mat-header-cell *matHeaderCellDef> Genesis Origin </th>
+                    <td mat-cell *matCellDef="let element"> {{element.Supplier | slice:0:8}}... </td>
+                </ng-container>
+                <ng-container matColumnDef="to">
+                    <th mat-header-cell *matHeaderCellDef> Target Facility </th>
+                    <td mat-cell *matCellDef="let element"> {{element.Receiver | slice:0:8}}... </td>
+                </ng-container>
+                <ng-container matColumnDef="status">
+                    <th mat-header-cell *matHeaderCellDef> Chain State </th>
+                    <td mat-cell *matCellDef="let element">
+                        <span class="bc-badge"
+                            [ngClass]="{'bc-badge-verified': element.Status == 1, 'bc-badge-pending': element.Status == 0}">
+                            Stage {{element.Status}}
+                        </span>
+                    </td>
+                </ng-container>
+                <ng-container matColumnDef="star" stickyEnd>
+                    <th mat-header-cell *matHeaderCellDef></th>
+                    <td mat-cell *matCellDef="let element"><i class="material-icons text-muted">more_vert</i></td>
+                </ng-container>
+
+                <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+                <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+            </table>
+            <mat-paginator [pageSizeOptions]="[5, 10, 20]" showFirstLastButtons class="bg-transparent"></mat-paginator>
+        </div>
+    </div>
+
+    <!-- Batch Detail Modal -->
+    <div class="modal fade" id="batchidinfo1" tabindex="-1">
+        <div class="modal-dialog modal-dialog-centered modal-lg">
+            <div class="modal-content pharma-modal">
+                <div class="modal-header border-0 pb-0 p-4 d-flex justify-content-between">
+                    <h5 class="modal-title fw-bold">Consignment Manifest</h5>
+                    <div id="pick-deliver">
+                        <button type="button" class="btn btn-primary-pharma shadow-sm" *ngIf="packageInfo.Status == 0"
+                            (click)="pickPackage(packageInfo.Batch.BatchID,packageInfo.TxType,packageInfo.Batch.BatchID)">
+                            <i class="material-icons align-middle small me-1">inventory</i> INITIATE PICKUP
+                        </button>
+                        <span class="bc-badge bc-badge-verified py-2 px-3" *ngIf="packageInfo.Status > 0">
+                            PICKUP COMPLETED & SIGNED
+                        </span>
+                    </div>
+                </div>
+                <div class="modal-body p-4">
+                    <div class="pharma-card bg-light border-0 p-4" *ngIf="packageInfo.Status > -1">
+                        <div class="row g-4 mb-4">
+                            <div class="col-md-6 border-end">
+                                <h6 class="text-muted uppercase small mb-3">Batch Details</h6>
+                                <p class="mb-1"><strong>ID:</strong> {{packageInfo.Batch.BatchID}}</p>
+                                <p class="mb-1"><strong>Content:</strong> {{packageInfo.Batch.Description}}</p>
+                                <p class="mb-1"><strong>Qty:</strong> {{packageInfo.Batch.Quantity}} Units</p>
+                            </div>
+                            <div class="col-md-6">
+                                <h6 class="text-muted uppercase small mb-3">Transit Route</h6>
+                                <p class="mb-1"><strong>From:</strong> {{packageInfo.Batch.Supplier | slice:0:15}}...
+                                </p>
+                                <p class="mb-1"><strong>To:</strong> {{packageInfo.Batch.Receiver | slice:0:15}}...</p>
+                                <p class="mb-1"><strong>Region:</strong> {{packageInfo.Batch.FarmLocation}}</p>
+                            </div>
+                        </div>
+                        <div class="alert alert-warning small mb-0 d-flex align-items-center">
+                            <i class="material-icons me-2">security</i>
+                            By initiating pickup, you take legal responsibility of the consignment on the blockchain
+                            ledger.
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer border-0 p-4">
+                    <button type="button" class="btn btn-secondary w-100" data-dismiss="modal">Close Manifest</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

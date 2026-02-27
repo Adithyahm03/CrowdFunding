@@ -1,0 +1,171 @@
+<div class="landing-container">
+    <!-- Hero Section -->
+    <section class="hero-section">
+        <div class="container">
+            <div class="row align-items-center">
+                <div class="col-lg-6 hero-text">
+                    <span class="badge bc-badge bc-badge-verified mb-3">Blockchain Verified System</span>
+                    <h1>Blockchain Pharmaceutical Supply Chain</h1>
+                    <p class="lead">Ensuring safety, transparency, and traceability for every medicine batch through
+                        immutable ledger technology.</p>
+                    <div class="hero-actions mt-4">
+                        <button class="btn btn-primary-pharma me-3" routerLink="/track-meds">Track Medicine</button>
+                        <button class="btn btn-outline-primary-pharma" (click)="scrollToLogin()">Get Started</button>
+                    </div>
+                </div>
+                <div class="col-lg-6 hero-image">
+                    <img src="../../../assets/img/background.jpg" alt="Pharma Mesh"
+                        class="img-fluid rounded-3 shadow-lg">
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Workflow Visualization -->
+    <section class="workflow-section section-padding bg-white">
+        <div class="container">
+            <div class="text-center mb-5">
+                <h2 class="section-title">End-to-End Traceability</h2>
+                <p class="text-muted">Real-time tracking across the entire pharmaceutical lifecycle</p>
+            </div>
+            <div class="workflow-track">
+                <div class="workflow-step" *ngFor="let step of workflowSteps">
+                    <div class="step-icon">
+                        <i class="material-icons">{{step.icon}}</i>
+                    </div>
+                    <div class="step-content">
+                        <h5>{{step.name}}</h5>
+                        <span class="step-status">Verified</span>
+                    </div>
+                    <div class="connector" *ngIf="!step.last"></div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Login Section (Replacing the old login card) -->
+    <section id="login-section" class="login-section section-padding">
+        <div class="container">
+            <div class="row justify-content-center">
+                <div class="col-lg-5">
+                    <div class="pharma-card p-5">
+                        <div class="text-center mb-4">
+                            <div class="login-icon-box mx-auto">
+                                <i class="material-icons">lock_person</i>
+                            </div>
+                            <h3 class="mt-3">Enterprise Login</h3>
+                            <p class="text-muted">Access your role-based dashboard</p>
+                        </div>
+
+                        <div class="row px-2">
+                            <!-- Admin -->
+                            <div class="col-md-6 mb-3 px-2">
+                                <button class="btn btn-role w-100 p-2 text-start d-flex align-items-center"
+                                    (click)="quickLogin('admin')">
+                                    <div class="icon-circle bg-primary-light me-3"><i
+                                            class="material-icons text-primary-pharma">admin_panel_settings</i></div>
+                                    <span class="fw-bold text-dark">Admin</span>
+                                </button>
+                            </div>
+                            <!-- Supplier -->
+                            <div class="col-md-6 mb-3 px-2">
+                                <button class="btn btn-role w-100 p-2 text-start d-flex align-items-center"
+                                    (click)="quickLogin('Supplier')">
+                                    <div class="icon-circle bg-primary-light me-3"><i
+                                            class="material-icons text-primary-pharma">agriculture</i></div>
+                                    <span class="fw-bold text-dark">Supplier</span>
+                                </button>
+                            </div>
+                            <!-- Transporter -->
+                            <div class="col-md-6 mb-3 px-2">
+                                <button class="btn btn-role w-100 p-2 text-start d-flex align-items-center"
+                                    (click)="quickLogin('Transporter')">
+                                    <div class="icon-circle bg-primary-light me-3"><i
+                                            class="material-icons text-primary-pharma">local_shipping</i></div>
+                                    <span class="fw-bold text-dark">Transporter</span>
+                                </button>
+                            </div>
+                            <!-- Manufacturer -->
+                            <div class="col-md-6 mb-3 px-2">
+                                <button class="btn btn-role w-100 p-2 text-start d-flex align-items-center"
+                                    (click)="quickLogin('Manufacturer')">
+                                    <div class="icon-circle bg-primary-light me-3"><i
+                                            class="material-icons text-primary-pharma">precision_manufacturing</i></div>
+                                    <span class="fw-bold text-dark">Manufacturer</span>
+                                </button>
+                            </div>
+                            <!-- Wholesaler -->
+                            <div class="col-md-6 mb-3 px-2">
+                                <button class="btn btn-role w-100 p-2 text-start d-flex align-items-center"
+                                    (click)="quickLogin('Wholesaler')">
+                                    <div class="icon-circle bg-primary-light me-3"><i
+                                            class="material-icons text-primary-pharma">warehouse</i></div>
+                                    <span class="fw-bold text-dark">Wholesaler</span>
+                                </button>
+                            </div>
+                            <!-- Distributor -->
+                            <div class="col-md-6 mb-3 px-2">
+                                <button class="btn btn-role w-100 p-2 text-start d-flex align-items-center"
+                                    (click)="quickLogin('Distributor')">
+                                    <div class="icon-circle bg-primary-light me-3"><i
+                                            class="material-icons text-primary-pharma">inventory</i></div>
+                                    <span class="fw-bold text-dark">Distributor</span>
+                                </button>
+                            </div>
+                            <!-- Pharma -->
+                            <div class="col-md-6 mb-3 px-2">
+                                <button class="btn btn-role w-100 p-2 text-start d-flex align-items-center"
+                                    (click)="quickLogin('Pharma')">
+                                    <div class="icon-circle bg-primary-light me-3"><i
+                                            class="material-icons text-primary-pharma">local_pharmacy</i></div>
+                                    <span class="fw-bold text-dark">Pharma</span>
+                                </button>
+                            </div>
+                            <!-- Track (Public) -->
+                            <div class="col-md-6 mb-3 px-2">
+                                <button class="btn btn-role w-100 p-2 text-start d-flex align-items-center"
+                                    routerLink="/track-meds">
+                                    <div class="icon-circle bg-primary-light me-3"><i
+                                            class="material-icons text-primary-pharma">search</i></div>
+                                    <span class="fw-bold text-dark">Track Meds</span>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Benefits Section -->
+    <section class="benefits-section section-padding">
+        <div class="container">
+            <div class="row g-4">
+                <div class="col-md-4">
+                    <div class="pharma-card h-100">
+                        <i class="material-icons text-success h1">security</i>
+                        <h4>Immutable Records</h4>
+                        <p class="text-muted">Blockchain technology ensures that once data is entered, it cannot be
+                            altered or deleted.</p>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="pharma-card h-100">
+                        <i class="material-icons text-info h1">visibility</i>
+                        <h4>Full Transparency</h4>
+                        <p class="text-muted">Every handover is recorded and visible to authorized participants in the
+                            network.</p>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="pharma-card h-100">
+                        <i class="material-icons text-warning h1">qr_code_scanner</i>
+                        <h4>Instant Verification</h4>
+                        <p class="text-muted">Scan any product to instantly verify its source and handling history from
+                            farm to pharmacy.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+</div>
