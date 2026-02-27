@@ -1,0 +1,192 @@
+<div class="container-fluid py-5">
+    <div class="row mb-4 animate-up">
+        <div class="col-md-8">
+            <h1 class="pharma-title mb-1">Pharma Dashboard</h1>
+            <p class="text-muted">Retail inventory management and patient safety verification</p>
+        </div>
+        <div class="col-md-4 text-right">
+            <div class="pharma-card d-inline-block px-3 py-2 text-left">
+                <span class="d-block text-xs uppercase font-bold text-muted mb-1">Blockchain Verification</span>
+                <span class="bc-badge bc-badge-verified">
+                    <i class="fas fa-check-shield mr-1"></i> Trust Score: 100%
+                </span>
+            </div>
+        </div>
+    </div>
+
+    <!-- Stats Row -->
+    <div class="row mb-5 g-4">
+        <div class="col-md-3">
+            <div class="pharma-card stat-card text-center">
+                <span class="text-muted small uppercase">Current Inventory</span>
+                <h3 class="mt-2 text-primary">842</h3>
+                <span class="text-muted x-small">Certified SKUs</span>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="pharma-card stat-card text-center">
+                <span class="text-muted small uppercase">Expired/Flagged</span>
+                <h3 class="mt-2 text-success">0</h3>
+                <span class="text-muted x-small">Clean Ledger</span>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="pharma-card stat-card highlight-card text-white text-center">
+                <span class="text-white-50 small uppercase">Patient Scans</span>
+                <h3 class="text-white mt-2">1,402</h3>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="pharma-card stat-card text-center">
+                <span class="text-muted small uppercase">Reorder Alerts</span>
+                <h3 class="mt-2 text-warning">3</h3>
+                <span class="text-muted x-small">Action Needed</span>
+            </div>
+        </div>
+    </div>
+
+    <!-- Activity & Timeline Grid -->
+    <div class="row g-4 mb-5">
+        <div class="col-lg-6">
+            <div class="pharma-card h-100">
+                <h4 class="mb-4">Recent Pharmacy Activity</h4>
+                <div class="activity-timeline">
+                    <div class="activity-item pb-4 border-start border-2 border-light ps-4 position-relative">
+                        <div class="activity-dot bg-success"></div>
+                        <div class="small fw-bold">Sale #492 Logged</div>
+                        <p class="text-muted x-small m-0">Patient scanned QR for verification</p>
+                    </div>
+                    <div class="activity-item pb-4 border-start border-2 border-light ps-4 position-relative">
+                        <div class="activity-dot bg-primary"></div>
+                        <div class="small fw-bold">Inbound Receipt Verified</div>
+                        <p class="text-muted x-small m-0">Nexus Logistics delivery confirmed</p>
+                    </div>
+                    <div class="activity-item ps-4 position-relative">
+                        <div class="activity-dot bg-info"></div>
+                        <div class="small fw-bold">Inventory Sync</div>
+                        <p class="text-muted x-small m-0">All 842 items verified on blockchain</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-lg-6">
+            <div class="pharma-card h-100">
+                <div class="d-flex justify-content-between align-items-center mb-4">
+                    <h4 class="m-0">Inventory Lifecycle</h4>
+                    <span class="text-success small fw-bold"><i class="material-icons align-middle small">verified</i>
+                        Origin Protected</span>
+                </div>
+                <!-- Mock QR Scanner UI -->
+                <div class="bg-light rounded-4 p-4 text-center border-dashed border-2">
+                    <i class="material-icons h1 m-0 text-success">qr_code_2</i>
+                    <div class="small fw-bold mt-2">RETAIL VERIFIER ACTIVATED</div>
+                    <p class="x-small text-muted mb-0">Verify medicine authenticity before dispense</p>
+                </div>
+                <div class="mt-4 p-3 bg-white shadow-sm rounded-4 d-flex align-items-center">
+                    <i class="material-icons text-info me-3">notification_important</i>
+                    <div>
+                        <div class="fw-bold small">Alert: 3 Batches expiring soon</div>
+                        <span class="text-muted x-small">Automated liquidation transfer suggested</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="row">
+        <!-- Retail Shelf -->
+        <div class="col-md-8">
+            <div class="pharma-card mb-4 animate-up" style="animation-delay: 0.5s">
+                <div class="d-flex justify-content-between align-items-center mb-4">
+                    <h5 class="mb-0">Dispensing Registry</h5>
+                    <div>
+                        <button class="btn btn-outline-secondary btn-sm mr-2 rounded-pill px-3">
+                            <i class="fas fa-qrcode mr-2"></i> Scan Product
+                        </button>
+                        <button class="btn btn-success btn-sm px-3 shadow-sm rounded-pill" (click)="openCreateModal()">
+                            <i class="fas fa-hand-holding-medical mr-2"></i> Dispense Medicine
+                        </button>
+                    </div>
+                </div>
+
+                <div class="table-responsive">
+                    <table class="table pharma-table">
+                        <thead>
+                            <tr>
+                                <th>Batch ID</th>
+                                <th>Medicine</th>
+                                <th>Expiry</th>
+                                <th>Safety Status</th>
+                                <th>Action</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <!-- Mock Row -->
+                            <tr>
+                                <td><code class="text-xs font-mono">0x9a2...31c</code></td>
+                                <td><strong>Lipitor 20mg</strong></td>
+                                <td>12/2026</td>
+                                <td><span class="bc-badge bc-badge-verified">Verified Origin</span></td>
+                                <td>
+                                    <button class="btn btn-outline-info btn-xs rounded-circle mr-1">
+                                        <i class="fas fa-history"></i>
+                                    </button>
+                                    <button class="btn btn-outline-success btn-xs rounded-circle">
+                                        <i class="fas fa-check"></i>
+                                    </button>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td><code class="text-xs font-mono">0x4b1...e22</code></td>
+                                <td><strong>Ventolin Inhaler</strong></td>
+                                <td>08/2025</td>
+                                <td><span class="bc-badge bc-badge-verified">Verified Origin</span></td>
+                                <td>
+                                    <button class="btn btn-outline-info btn-xs rounded-circle mr-1">
+                                        <i class="fas fa-history"></i>
+                                    </button>
+                                    <button class="btn btn-outline-success btn-xs rounded-circle">
+                                        <i class="fas fa-check"></i>
+                                    </button>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+
+        <!-- Role Overview -->
+        <div class="col-md-4">
+            <div class="pharma-card animate-up" style="animation-delay: 0.6s">
+                <h5 class="mb-3 border-bottom pb-2">Pharmacy Identity</h5>
+                <div class="d-flex align-items-center mb-4">
+                    <div class="bg-success rounded-circle text-white d-flex align-items-center justify-content-center mr-3 shadow"
+                        style="width: 60px; height: 60px;">
+                        <i class="fas fa-prescription-bottle-alt fa-2x"></i>
+                    </div>
+                    <div>
+                        <h6 class="mb-0">{{userProfile.name || 'City Pharma Care'}}</h6>
+                        <small class="text-muted">{{userProfile.location || 'Medical District 5'}}</small>
+                    </div>
+                </div>
+
+                <div class="alert alert-info py-2 px-3 small border-0 shadow-none mb-3">
+                    <i class="fas fa-info-circle mr-2"></i> All dispensed items are immutably logged on the public
+                    ledger for patient verification.
+                </div>
+
+                <div class="bg-gray-50 rounded p-3 mb-3">
+                    <div class="row no-gutters mb-2">
+                        <div class="col-5 text-muted small">License:</div>
+                        <div class="col-7 font-bold small text-dark">L-94021-BC</div>
+                    </div>
+                    <div class="row no-gutters">
+                        <div class="col-5 text-muted small">Wallet:</div>
+                        <div class="col-7 text-truncate font-mono text-xs">{{userProfile.ethAddress}}</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,66 @@
+.pharma-header {
+    background: var(--primary-blue) !important;
+    padding: 15px 0;
+    position: fixed;
+    top: 0;
+    width: 100%;
+    z-index: 1050;
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+}
+
+.logo-box-small {
+    width: 36px;
+    height: 36px;
+    background: var(--secondary-green);
+    border-radius: 8px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    color: white;
+}
+
+.pharma-header h1 {
+    color: white !important;
+    font-size: 1.4rem;
+    margin: 0;
+    font-weight: 700;
+}
+
+.dot {
+    height: 8px;
+    width: 8px;
+    background-color: #94a3b8;
+    border-radius: 50%;
+    display: inline-block;
+    margin-right: 6px;
+}
+
+.dot.active {
+    background-color: var(--secondary-green);
+    box-shadow: 0 0 8px var(--secondary-green);
+}
+
+.user-pill {
+    background: rgba(255, 255, 255, 0.1);
+    padding: 6px 16px;
+    border-radius: 50px;
+}
+
+.btn-back {
+    color: white;
+    background: rgba(255, 255, 255, 0.15);
+    border: none;
+    border-radius: 12px;
+    padding: 8px;
+    display: flex;
+    transition: all 0.3s ease;
+}
+
+.btn-back:hover {
+    background: rgba(255, 255, 255, 0.25);
+    transform: translateX(-3px);
+}
+
+.btn-back i {
+    font-size: 20px;
+}

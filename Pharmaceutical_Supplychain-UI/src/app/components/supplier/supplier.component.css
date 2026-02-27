@@ -1,0 +1,56 @@
+.supplier-dashboard {
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+.avatar-box {
+    width: 60px;
+    height: 60px;
+    background: var(--primary-blue);
+    border-radius: 16px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    box-shadow: 0 4px 6px rgba(10, 61, 98, 0.2);
+}
+
+.border-white-10 {
+    border-color: rgba(255, 255, 255, 0.1) !important;
+}
+
+.batch-link {
+    cursor: pointer;
+    text-decoration: underline;
+    text-underline-offset: 4px;
+    transition: var(--transition);
+}
+
+.batch-link:hover {
+    color: var(--secondary-green);
+    text-decoration-color: var(--secondary-green);
+}
+
+.pointer {
+    cursor: pointer;
+}
+
+/* Modal and Input Overrides */
+.modal-lg {
+    max-width: 800px;
+}
+
+/* Material Table Styling Override */
+.mat-table {
+    background: transparent !important;
+}
+
+.mat-header-cell {
+    color: var(--text-muted) !important;
+    font-size: 0.75rem !important;
+    font-weight: 700 !important;
+}
+
+.mat-cell {
+    color: var(--text-dark) !important;
+    padding: 16px 0 !important;
+}

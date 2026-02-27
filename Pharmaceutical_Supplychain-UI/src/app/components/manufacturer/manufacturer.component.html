@@ -1,0 +1,275 @@
+<div id="page-wrapper" class="manufacturer-dashboard">
+    <!-- Dashboard Header -->
+    <div class="dashboard-header mb-4">
+        <div class="row align-items-center">
+            <div class="col-md-6">
+                <h2 class="m-0">Manufacturer Dashboard</h2>
+                <p class="text-muted small m-0">Production, Quality Control & Chain Management</p>
+            </div>
+            <div class="col-md-6 text-end">
+                <span class="bc-badge bc-badge-verified me-2">Authenticated Node: {{name}}</span>
+                <span class="text-muted small">{{account | slice:0:6}}...{{account | slice:-4}}</span>
+            </div>
+        </div>
+    </div>
+
+    <!-- Production Activity Grid -->
+    <div class="row g-4 mb-5">
+        <div class="col-lg-7">
+            <div class="pharma-card h-100">
+                <div class="d-flex justify-content-between align-items-center mb-4">
+                    <h4 class="m-0">Recent Production Logs</h4>
+                    <span class="bc-badge bc-badge-verified">Real-time Sync</span>
+                </div>
+                <div class="activity-timeline">
+                    <div class="activity-item pb-4 border-start border-2 border-light ps-4 position-relative">
+                        <div class="activity-dot bg-success"></div>
+                        <div class="small fw-bold">Batch #{{batchCount}} Synthesized</div>
+                        <p class="text-muted x-small m-0">Quality assurance signature appended to block</p>
+                    </div>
+                    <div class="activity-item pb-4 border-start border-2 border-light ps-4 position-relative">
+                        <div class="activity-dot bg-primary"></div>
+                        <div class="small fw-bold">Raw Material #{{rawPackageCount}} Verified</div>
+                        <p class="text-muted x-small m-0">Supplier provenance check successful</p>
+                    </div>
+                    <div class="activity-item ps-4 position-relative">
+                        <div class="activity-dot bg-info"></div>
+                        <div class="small fw-bold">Wholesaler Network Handshake</div>
+                        <p class="text-muted x-small m-0">Connection established with downstream node</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-lg-5">
+            <div class="pharma-card h-100">
+                <h4 class="mb-4">Facility Status Timeline</h4>
+                <div class="p-3 bg-light rounded-4 mb-3 d-flex align-items-center">
+                    <div class="icon-circle bg-white me-3"><i class="material-icons text-success small">check_circle</i>
+                    </div>
+                    <div>
+                        <div class="fw-bold small">Production Line Alpha</div>
+                        <span class="text-muted x-small">Active & Calibrated</span>
+                    </div>
+                </div>
+                <div class="p-3 bg-light rounded-4 mb-3 d-flex align-items-center">
+                    <div class="icon-circle bg-white me-3"><i class="material-icons text-primary small">qr_code</i>
+                    </div>
+                    <div>
+                        <div class="fw-bold small">Batch QR Service</div>
+                        <span class="text-muted x-small">Generating for Batch #{{batchCount + 1}}</span>
+                    </div>
+                </div>
+                <button class="btn btn-outline-primary-pharma w-100 btn-sm mt-2">Run Diagnostics</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Raw Package Section -->
+    <div class="pharma-card mb-5">
+        <div class="d-flex justify-content-between align-items-center mb-4">
+            <h4 class="m-0">Incoming Raw Materials</h4>
+            <div class="actions">
+                <button class="btn btn-outline-secondary me-2 btn-sm" (click)="getPackagesCountM()">
+                    <i class="material-icons alt-small align-middle me-1">refresh</i> Sync
+                </button>
+                <button class="btn btn-primary-pharma btn-sm" data-toggle="modal" data-target="#rawpackagerecieve1">
+                    <i class="material-icons alt-small align-middle me-1">fact_check</i> Confirm Receipt
+                </button>
+            </div>
+        </div>
+
+        <div class="table-responsive">
+            <table mat-table [dataSource]="rawSource" class="w-100">
+                <ng-container matColumnDef="batchid" sticky>
+                    <th mat-header-cell *matHeaderCellDef> Batch ID </th>
+                    <td mat-cell *matCellDef="let element">
+                        <span class="fw-bold text-primary pointer" data-toggle="modal" data-target="#batchidinfo1"
+                            (click)="getPackageTx(element)">
+                            #{{element.BatchID}}
+                        </span>
+                    </td>
+                </ng-container>
+                <ng-container matColumnDef="description">
+                    <th mat-header-cell *matHeaderCellDef> Description </th>
+                    <td mat-cell *matCellDef="let element"> {{element.Description}} </td>
+                </ng-container>
+                <ng-container matColumnDef="farmername">
+                    <th mat-header-cell *matHeaderCellDef> Supplier </th>
+                    <td mat-cell *matCellDef="let element"> {{element.FarmerName}} </td>
+                </ng-container>
+                <ng-container matColumnDef="initquantity">
+                    <th mat-header-cell *matHeaderCellDef> Total </th>
+                    <td mat-cell *matCellDef="let element"> {{element.InitQuantity}} </td>
+                </ng-container>
+                <ng-container matColumnDef="usedquantity">
+                    <th mat-header-cell *matHeaderCellDef> Consumed </th>
+                    <td mat-cell *matCellDef="let element"> {{element.UsedQuantity}} </td>
+                </ng-container>
+                <ng-container matColumnDef="status">
+                    <th mat-header-cell *matHeaderCellDef> Status </th>
+                    <td mat-cell *matCellDef="let element">
+                        <span class="bc-badge"
+                            [ngClass]="{'bc-badge-verified': element.Status === 1, 'bc-badge-pending': element.Status === 0}">
+                            Stage {{element.Status}}
+                        </span>
+                    </td>
+                </ng-container>
+                <ng-container matColumnDef="star" stickyEnd>
+                    <th mat-header-cell *matHeaderCellDef></th>
+                    <td mat-cell *matCellDef="let element"><i class="material-icons text-muted">more_vert</i></td>
+                </ng-container>
+
+                <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+                <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+            </table>
+            <mat-paginator [pageSizeOptions]="[5, 10, 20]" showFirstLastButtons class="bg-transparent"></mat-paginator>
+        </div>
+    </div>
+
+    <!-- Manufactured Batch Section -->
+    <div class="pharma-card mb-5">
+        <div class="d-flex justify-content-between align-items-center mb-4">
+            <h4 class="m-0">Production History (Final Products)</h4>
+            <div class="actions">
+                <button class="btn btn-outline-secondary me-2 btn-sm" (click)="getBatchesCountM()">
+                    <i class="material-icons alt-small align-middle me-1">refresh</i> Sync
+                </button>
+                <button class="btn btn-primary-pharma btn-sm" data-toggle="modal" data-target="#createbatch1">
+                    <i class="material-icons alt-small align-middle me-1">add_circle</i> Start Production Batch
+                </button>
+            </div>
+        </div>
+
+        <div class="table-responsive">
+            <table mat-table [dataSource]="MedicineSource" class="w-100">
+                <ng-container matColumnDef="batchid" sticky>
+                    <th mat-header-cell *matHeaderCellDef> Batch ID </th>
+                    <td mat-cell *matCellDef="let element">
+                        <span class="fw-bold text-primary pointer" data-toggle="modal" data-target="#batchidinfo1"
+                            (click)="getPackageTx(element)">
+                            #{{element.BatchID}}
+                        </span>
+                    </td>
+                </ng-container>
+                <ng-container matColumnDef="description">
+                    <th mat-header-cell *matHeaderCellDef> Compound </th>
+                    <td mat-cell *matCellDef="let element"> {{element.Description}} </td>
+                </ng-container>
+                <ng-container matColumnDef="quantity">
+                    <th mat-header-cell *matHeaderCellDef> Yield </th>
+                    <td mat-cell *matCellDef="let element"> {{element.Quantity}} Units </td>
+                </ng-container>
+                <ng-container matColumnDef="status">
+                    <th mat-header-cell *matHeaderCellDef> Network State </th>
+                    <td mat-cell *matCellDef="let element">
+                        <span class="bc-badge bc-badge-verified">Stage {{element.Status}}</span>
+                    </td>
+                </ng-container>
+                <ng-container matColumnDef="star" stickyEnd>
+                    <th mat-header-cell *matHeaderCellDef></th>
+                    <td mat-cell *matCellDef="let element"><i class="material-icons text-muted">more_vert</i></td>
+                </ng-container>
+
+                <tr mat-header-row *matHeaderRowDef="displayedMedicineColumns"></tr>
+                <tr mat-row *matRowDef="let row; columns: displayedMedicineColumns;"></tr>
+            </table>
+            <mat-paginator [pageSizeOptions]="[5, 10, 20]" showFirstLastButtons class="bg-transparent"></mat-paginator>
+        </div>
+    </div>
+
+    <!-- Modals (Standardized pharma look) -->
+    <div class="modal fade" id="createbatch1" tabindex="-1">
+        <div class="modal-dialog modal-dialog-centered modal-lg">
+            <div class="modal-content pharma-modal">
+                <div class="modal-header border-0 pb-0 p-4">
+                    <h5 class="modal-title fw-bold">Initiate Pharmaceutical Production</h5>
+                    <button type="button" class="btn-close" data-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body p-4">
+                    <form [formGroup]="medicineDetails">
+                        <div class="row g-3 mb-4">
+                            <div class="col-md-8">
+                                <label class="small fw-bold">Medicine Compound Description</label>
+                                <input type="text" formControlName="description" class="form-control"
+                                    placeholder="e.g. Paracetamol 500mg X Batch">
+                            </div>
+                            <div class="col-md-4">
+                                <label class="small fw-bold">Production Yield</label>
+                                <input type="number" formControlName="quantity" class="form-control"
+                                    placeholder="Units">
+                            </div>
+                        </div>
+
+                        <div class="pharma-card bg-light border-0 mb-4 p-4">
+                            <div class="d-flex justify-content-between align-items-center mb-3">
+                                <h6 class="m-0 fw-bold">Raw Material Consumption</h6>
+                                <button (click)="addRawMat()"
+                                    class="btn btn-outline-primary-pharma btn-sm rounded-pill">
+                                    <i class="material-icons small align-middle">add</i> Link Raw Batch
+                                </button>
+                            </div>
+                            <div formArrayName="rawmaterial">
+                                <div *ngFor="let address of rawmaterial.controls; let i=index"
+                                    class="row g-2 mb-2 p-2 bg-white rounded-3 shadow-sm" [formGroupName]="i">
+                                    <div class="col-md-8">
+                                        <input type="text" formControlName="pid" class="form-control form-control-sm"
+                                            placeholder="Raw Batch ID #">
+                                    </div>
+                                    <div class="col-md-4">
+                                        <input type="text" formControlName="quantity"
+                                            class="form-control form-control-sm" placeholder="Qty">
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="row g-3 mb-4">
+                            <div class="col-md-6">
+                                <label class="small fw-bold">Logistics Partner</label>
+                                <input type="text" formControlName="shipper" class="form-control"
+                                    placeholder="Transporter Wallet">
+                            </div>
+                            <div class="col-md-6">
+                                <label class="small fw-bold">Downstream Partner</label>
+                                <input type="text" formControlName="receiver" class="form-control"
+                                    placeholder="Wholesaler Wallet">
+                            </div>
+                        </div>
+
+                        <button type="button" class="btn btn-primary-pharma w-100 py-3" (click)="createMedicine()"
+                            [disabled]="!medicineDetails.valid">
+                            AUTHORIZE PRODUCTION & WRITE TO CHAIN
+                        </button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Receipt Modal -->
+    <div class="modal fade" id="rawpackagerecieve1" tabindex="-1">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content pharma-modal">
+                <div class="modal-header border-0 pb-0 p-4">
+                    <h5 class="modal-title fw-bold">Confirm Raw Material Receipt</h5>
+                    <button type="button" class="btn-close" data-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body p-4">
+                    <form [formGroup]="rawreceivepid">
+                        <div class="form-group mb-4">
+                            <label class="small fw-bold">Genesis Package ID</label>
+                            <input type="text" formControlName="pid" class="form-control"
+                                placeholder="Enter Batch ID for verification" required>
+                            <p class="text-muted small mt-2">By confirming, you verify the physical condition matches
+                                the blockchain record.</p>
+                        </div>
+                        <button type="button" class="btn btn-primary-pharma w-100 py-3"
+                            [disabled]="!rawreceivepid.valid" (click)="rawPackageReceived()">
+                            VERIFY & UPDATE ON-CHAIN STATUS
+                        </button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

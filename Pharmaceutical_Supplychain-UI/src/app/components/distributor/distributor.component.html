@@ -1,0 +1,183 @@
+<div class="container-fluid py-5">
+    <div class="row mb-4 animate-up">
+        <div class="col-md-8">
+            <h1 class="pharma-title mb-1">Distributor Dashboard</h1>
+            <p class="text-muted">Manage logistics, inventory, and retail fulfillment</p>
+        </div>
+        <div class="col-md-4 text-right">
+            <div class="pharma-card d-inline-block px-3 py-2 text-left">
+                <span class="d-block text-xs uppercase font-bold text-muted mb-1">Network Status</span>
+                <span class="bc-badge bc-badge-verified">
+                    <i class="fas fa-link mr-1"></i> Node Active
+                </span>
+            </div>
+        </div>
+    </div>
+
+    <!-- Stats Row -->
+    <div class="row mb-5 g-4">
+        <div class="col-md-3">
+            <div class="pharma-card stat-card text-center">
+                <span class="text-muted small uppercase">Fulfillment Queue</span>
+                <h3 class="mt-2 text-primary">12</h3>
+                <span class="text-muted x-small">Pending Dispatch</span>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="pharma-card stat-card text-center">
+                <span class="text-muted small uppercase">In-Transit</span>
+                <h3 class="mt-2 text-info">45</h3>
+                <span class="text-muted x-small">To Retailers</span>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="pharma-card stat-card highlight-card text-white text-center">
+                <span class="text-white-50 small uppercase">Storage Capacity</span>
+                <h3 class="text-white mt-2">82%</h3>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="pharma-card stat-card text-center">
+                <span class="text-muted small uppercase">Verified Batches</span>
+                <h3 class="mt-2 text-success">2,840</h3>
+                <span class="text-muted x-small">On Ledger</span>
+            </div>
+        </div>
+    </div>
+
+    <!-- Activity & Timeline Grid -->
+    <div class="row g-4 mb-5">
+        <div class="col-lg-7">
+            <div class="pharma-card h-100">
+                <h4 class="mb-4">Recent Distribution Activity</h4>
+                <div class="activity-timeline">
+                    <div class="activity-item pb-4 border-start border-2 border-light ps-4 position-relative">
+                        <div class="activity-dot bg-success"></div>
+                        <div class="small fw-bold">Dispatch #942 Signed</div>
+                        <p class="text-muted x-small m-0">Transporter handover confirmed by node</p>
+                    </div>
+                    <div class="activity-item pb-4 border-start border-2 border-light ps-4 position-relative">
+                        <div class="activity-dot bg-primary"></div>
+                        <div class="small fw-bold">Receipt #812 Verified</div>
+                        <p class="text-muted x-small m-0">Wholesaler provenance check passed</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-lg-5">
+            <div class="pharma-card h-100">
+                <h4 class="mb-4">Distribution Timeline</h4>
+                <div class="p-3 bg-light rounded-4 mb-3 d-flex align-items-center">
+                    <i class="material-icons text-primary me-3">hub</i>
+                    <div>
+                        <div class="fw-bold small">Upstream: Wholesaler</div>
+                        <span class="text-muted x-small">Connection Stable</span>
+                    </div>
+                </div>
+                <div class="p-3 bg-light rounded-4 mb-3 d-flex align-items-center">
+                    <i class="material-icons text-success me-3">store</i>
+                    <div>
+                        <div class="fw-bold small">Downstream: Pharmacies</div>
+                        <span class="text-muted x-small">18 Nodes Active</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="row">
+        <!-- Main Inventory -->
+        <div class="col-md-8">
+            <div class="pharma-card mb-4 animate-up" style="animation-delay: 0.5s">
+                <div class="d-flex justify-content-between align-items-center mb-4">
+                    <h5 class="mb-0">Medicinal Inventory Registry</h5>
+                    <button class="btn btn-primary btn-sm px-3 shadow-sm rounded-pill" (click)="openCreateModal()">
+                        <i class="fas fa-plus mr-2"></i> Register Inbound
+                    </button>
+                </div>
+
+                <div class="table-responsive">
+                    <table class="table pharma-table">
+                        <thead>
+                            <tr>
+                                <th>Batch ID</th>
+                                <th>Medicine Name</th>
+                                <th>Quantity</th>
+                                <th>Status</th>
+                                <th>Action</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <!-- Mock Row -->
+                            <tr>
+                                <td><code class="text-xs font-mono">0x72a...d82</code></td>
+                                <td><strong>Amoxicillin 500mg</strong></td>
+                                <td>1,200 Units</td>
+                                <td><span class="bc-badge bc-badge-verified">Verified</span></td>
+                                <td>
+                                    <button class="btn btn-outline-info btn-xs rounded-circle mr-1"
+                                        title="View Details">
+                                        <i class="fas fa-eye"></i>
+                                    </button>
+                                    <button class="btn btn-outline-primary btn-xs rounded-circle" title="Transfer">
+                                        <i class="fas fa-truck-loading"></i>
+                                    </button>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td><code class="text-xs font-mono">0x3f1...e90</code></td>
+                                <td><strong>Ibuprofen 400mg</strong></td>
+                                <td>5,000 Units</td>
+                                <td><span class="bc-badge bc-badge-pending">Scanning</span></td>
+                                <td>
+                                    <button class="btn btn-outline-info btn-xs rounded-circle mr-1">
+                                        <i class="fas fa-eye"></i>
+                                    </button>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+
+        <!-- Role Overview -->
+        <div class="col-md-4">
+            <div class="pharma-card animate-up" style="animation-delay: 0.6s">
+                <h5 class="mb-3 border-bottom pb-2">Distributor Profile</h5>
+                <div class="d-flex align-items-center mb-4">
+                    <div class="bg-primary rounded-circle text-white d-flex align-items-center justify-content-center mr-3 shadow"
+                        style="width: 60px; height: 60px;">
+                        <i class="fas fa-warehouse fa-2x"></i>
+                    </div>
+                    <div>
+                        <h6 class="mb-0">{{userProfile.name || 'Nexus Logistics'}}</h6>
+                        <small class="text-muted">{{userProfile.location || 'Central Distribution Hub'}}</small>
+                    </div>
+                </div>
+
+                <div class="bg-gray-50 rounded p-3 mb-3">
+                    <div class="row no-gutters mb-2">
+                        <div class="col-5 text-muted small">ID Type:</div>
+                        <div class="col-7 font-bold small text-dark">Verified Distributor</div>
+                    </div>
+                    <div class="row no-gutters">
+                        <div class="col-5 text-muted small">Address:</div>
+                        <div class="col-7 text-truncate font-mono text-xs">{{userProfile.ethAddress}}</div>
+                    </div>
+                </div>
+
+                <div class="list-group list-group-flush small mt-2">
+                    <div class="list-group-item bg-transparent d-flex justify-content-between align-items-center px-0">
+                        <span>Ledger Transactions</span>
+                        <span class="badge badge-light badge-pill">126</span>
+                    </div>
+                    <div class="list-group-item bg-transparent d-flex justify-content-between align-items-center px-0">
+                        <span>Retail Partners</span>
+                        <span class="badge badge-light badge-pill">18</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

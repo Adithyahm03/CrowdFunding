@@ -1,0 +1,30 @@
+<nav class="navbar pharma-header">
+        <div class="container d-flex justify-content-between align-items-center">
+                <div class="d-flex align-items-center">
+                        <button class="btn btn-back me-3" (click)="goBack()" title="Go Back">
+                                <i class="material-icons">arrow_back</i>
+                        </button>
+                        <a class="navbar-brand d-flex align-items-center" routerLink="/">
+                                <div class="logo-box-small me-2">
+                                        <i class="material-icons">health_and_safety</i>
+                                </div>
+                                <h1>PharmaChain</h1>
+                        </a>
+                </div>
+
+                <div class="header-meta d-none d-md-flex align-items-center">
+                        <div class="network-status me-4">
+                                <span class="dot active"></span>
+                                <span class="status-text small text-white-50">Local Node (Port 8585)</span>
+                        </div>
+                        <div class="user-pill d-flex align-items-center me-3">
+                                <i class="material-icons text-white-50 me-2">account_circle</i>
+                                <span class="small text-white fw-bold">Active Wallet</span>
+                        </div>
+                        <button class="btn btn-sm btn-outline-light border-0 ripple" (click)="logout()">
+                                <i class="material-icons align-middle small">logout</i>
+                                <span class="small ms-1">Logout</span>
+                        </button>
+                </div>
+        </div>
+</nav>
